@@ -1,4 +1,4 @@
-const comicPages = ["tutor1.jpg", "tutor2.jpg"];
+const comicPages = ["img/tutor1.jpg", "img/tutor2.jpg"];
 
 var currentPage = 0;
 
