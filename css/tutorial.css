@@ -16,6 +16,10 @@ body {width:960px;
   max-height: 100%;
 }
 
-#prev-arrow, #next-arrow {
-  font-size: 24px;
+#prev_img, #next_img {
+  cursor: pointer;
+}
+
+#prev_img:hover, #next_img:hover {
+  opacity: 0.7;
 }
