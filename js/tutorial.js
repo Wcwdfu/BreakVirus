@@ -3,7 +3,13 @@ const comicPages = [
   { image: "img/tutorial1.jpg", sound: "sound/effect1.mp3" },
   { image: "img/tutorial2.jpg", sound: "sound/effect2.mp3" },
   { image: "img/tutorial3.jpg", sound: "sound/effect3.mp3" },
-  { image: "img/tutorial4.jpg", sound: "sound/effect4.mp3" }
+  { image: "img/tutorial4.jpg", sound: "sound/effect4.mp3" },
+  { image: "img/tutorial5.jpg", sound: null},
+  { image: "img/tutorial6.jpg", sound: null},
+  { image: "img/tutorial7.jpg", sound: null},
+  { image: "img/tutorial8.jpg", sound: null},
+  { image: "img/tutorial9.jpg", sound: null},
+  { image: "img/tutorial10.jpg", sound: null}
 ];
 
 var currentPage = 0;
@@ -26,7 +32,7 @@ $(document).ready(function() {
       $("#prev_img").show();
     }
 
-    if (pageIndex === 4) {
+    if (pageIndex === 10) {
       $("#next_img").hide();
     } else {
       $("#next_img").show();
@@ -51,6 +57,9 @@ $(document).ready(function() {
 
   $("#prev_img").on("click", prevPage);
   $("#next_img").on("click", nextPage);
+  $("#skip-button").on("click", function() {
+    window.location.href = "main.html";
+  });
 
 });
 
