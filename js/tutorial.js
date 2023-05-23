@@ -1,15 +1,15 @@
 const comicPages = [
-  { image: "img/title.jpg", sound: null},
-  { image: "img/tutorial1.jpg", sound: "sound/effect1.mp3" },
-  { image: "img/tutorial2.jpg", sound: "sound/effect2.mp3" },
-  { image: "img/tutorial3.jpg", sound: "sound/effect3.mp3" },
-  { image: "img/tutorial4.jpg", sound: "sound/effect4.mp3" },
-  { image: "img/tutorial5.jpg", sound: null},
-  { image: "img/tutorial6.jpg", sound: null},
-  { image: "img/tutorial7.jpg", sound: null},
-  { image: "img/tutorial8.jpg", sound: null},
-  { image: "img/tutorial9.jpg", sound: null},
-  { image: "img/tutorial10.jpg", sound: null}
+  { image: "img/tutorialImg/title.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial1.jpg", sound: "sound/tutorialSound/effect1.mp3" },
+  { image: "img/tutorialImg/tutorial2.jpg", sound: "sound/tutorialSound/effect2.mp3" },
+  { image: "img/tutorialImg/tutorial3.jpg", sound: "sound/tutorialSound/effect3.mp3" },
+  { image: "img/tutorialImg/tutorial4.jpg", sound: "sound/tutorialSound/effect4.mp3" },
+  { image: "img/tutorialImg/tutorial5.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial6.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial7.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial8.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial9.jpg", sound: null},
+  { image: "img/tutorialImg/tutorial10.jpg", sound: null}
 ];
 
 var currentPage = 0;
