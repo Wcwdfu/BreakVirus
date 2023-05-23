@@ -89,7 +89,7 @@ $(function () {
       if (bricks[row][col] == 1) {
         dy = -dy;
         bricks[row][col] = 0;
-      } else if (bricks[row][col >= 2]) {
+      } else if (bricks[row][col] >= 2) {
         dy = -dy;
         bricks[row][col] = 0;
         //TODO : item 으로 인한 효과
