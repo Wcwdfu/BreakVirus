@@ -26,36 +26,39 @@ $(function () {
   var BRICKHEIGHT;
   var PADDING;
   // 보스관련
-  var ix=340;
-  var iy=100;
-  var vx=2;
-  var vy=2;
-  var imaglist = ["img/easyboss1.png", "img/easyboss2.png", "img/easyboss3.png", "img/easyboss4.png"];
+  var ix = 340;
+  var iy = 100;
+  var vx = 2;
+  var vy = 2;
+  var imaglist = [
+    "img/easyboss1.png",
+    "img/easyboss2.png",
+    "img/easyboss3.png",
+    "img/easyboss4.png",
+  ];
   var imgindex = 0;
-  var bosshp=4;
+  var bosshp = 4;
   // 사운드
-  var bosshit=new Audio('sound/bosshit.mp3')
-  var bossdie=new Audio('sound/easybossdie.wav')
+  var bosshit = new Audio("sound/bosshit.mp3");
+  var bossdie = new Audio("sound/easybossdie.wav");
   // 배경
   var bgi = new Image();
-  bgi.src ="img/easybsbg.jpg"
+  bgi.src = "img/easybsbg.jpg";
 
   // 라이프
-  var life=3;
-
+  var life = 3;
 
   var ctx;
   var anim;
 
-  var images=[];
+  var images = [];
 
-
-  imaglist.forEach(function(src,index){
-    var img=new Image();
-    img.src=src;
-    img.onload=function(){
-      images[index]=img;
-    }
+  imaglist.forEach(function (src, index) {
+    var img = new Image();
+    img.src = src;
+    img.onload = function () {
+      images[index] = img;
+    };
   });
 
   function init() {
@@ -68,8 +71,6 @@ $(function () {
     canvasMaxX = canvasMinX + WIDTH;
     //animation
     anim = requestAnimationFrame(draw);
-
-    
   }
 
   function draw() {
@@ -78,36 +79,42 @@ $(function () {
     ball(x, y, radius);
     rect(paddlex, HEIGHT - paddleh, paddlew, paddleh);
     drawbosshp();
-    $("#life").text("Life: "+ life);
+    $("#life").text("Life: " + life);
 
-    if(bosshp>0){
-      boss(ix,iy)
+    if (bosshp > 0) {
+      boss(ix, iy);
     }
-    
+
     x += dx;
     y += dy;
     ix += vx;
     iy += vy;
 
     //보스충돌감지
-      if (bosshp>0 && x>ix+10 && x<ix+290 && y>iy+20 && y<iy+250) {
-        dy = -dy;
-        dx = -dx;
-        vx = -vx;
-        vy = -vy;
-        if(bosshp==3){
-          if(vx<0) vx= 3;
-          if(vx>0) vx= -3;
-          if(vy<0) vy= 3;
-          if(vy>0) vy= -3;
-        }
-        bosshp--;
-        bosshit.play();
-        if(bosshp==0){
-          bossdie.play();
-          is_gamewin = true;
-        }
+    if (
+      bosshp > 0 &&
+      x > ix + 10 &&
+      x < ix + 290 &&
+      y > iy + 20 &&
+      y < iy + 250
+    ) {
+      dy = -dy;
+      dx = -dx;
+      vx = -vx;
+      vy = -vy;
+      if (bosshp == 3) {
+        if (vx < 0) vx = 3;
+        if (vx > 0) vx = -3;
+        if (vy < 0) vy = 3;
+        if (vy > 0) vy = -3;
       }
+      bosshp--;
+      bosshit.play();
+      if (bosshp == 0) {
+        bossdie.play();
+        is_gamewin = true;
+      }
+    }
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
@@ -119,28 +126,27 @@ $(function () {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
       } else {
-        if(life>1){
+        if (life > 1) {
           life--;
           ix = 380;
           iy = 100;
           x = 480;
           y = 400;
-        }else{
+        } else {
           is_gameover = true;
         }
       }
     }
     //보스움직임제한
-    if(ix<0||ix>660){
-      vx=  -vx;
+    if (ix < 0 || ix > 660) {
+      vx = -vx;
     }
-    if(iy<0||iy>200){
+    if (iy < 0 || iy > 200) {
       vy = -vy;
     }
-    if(imgindex>=images.length){
-      imgindex=0;
+    if (imgindex >= images.length) {
+      imgindex = 0;
     }
-
 
     if (is_gameover) {
       window.cancelAnimationFrame(anim);
@@ -148,32 +154,30 @@ $(function () {
       anim = window.requestAnimationFrame(draw);
     }
   }
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
 
   function drawbosshp() {
-  ctx.font = "24px Arial";
-  ctx.fillStyle = "black";
-  ctx.fillText("Boss HP: "+bosshp, 8, 30);
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Boss HP: " + bosshp, 8, 30);
   }
 
   function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
   }
 
-
-
   function boss(ix, iy) {
     if (images[imgindex]) {
       var image = images[imgindex];
       ctx.drawImage(image, ix, iy, 300, 300);
-     imgindex++;
+      imgindex++;
     }
   }
 
-  function bgimage(){
-    ctx.drawImage(bgi,0,0,canvas.width,canvas.height);
+  function bgimage() {
+    ctx.drawImage(bgi, 0, 0, canvas.width, canvas.height);
   }
 
   function ball(x, y, r) {
