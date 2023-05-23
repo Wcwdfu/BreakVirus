@@ -11,13 +11,15 @@ $(function () {
   var canvasMinX;
   var canvasMaxX;
   var is_gameover = false;
+  var difficulty = 1;
+  var difficulty_NROWS = [3, 4, 5];
+  var difficulty_NCOLS = [3, 4, 5];
 
   //paddle
   var paddlex;
   var paddleh;
   var paddlew;
-  var is_leftPannel = false;
-  var is_rightPannel = false;
+  var paddlePaddingBottom = 10;
 
   //bricks
   var bricks;
@@ -27,6 +29,10 @@ $(function () {
   var BRICKHEIGHT;
   var PADDING;
 
+  //monster
+  var monsterCnt;
+
+  //ctx
   var ctx;
   var anim;
 
@@ -38,6 +44,7 @@ $(function () {
 
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
+    difficulty = 1;
     //animation
     anim = requestAnimationFrame(draw);
   }
@@ -45,7 +52,7 @@ $(function () {
   function draw() {
     clear();
     ball(x, y, radius);
-    rect(paddlex, HEIGHT - paddleh, paddlew, paddleh);
+    rect(paddlex, HEIGHT - paddleh - paddlePaddingBottom, paddlew, paddleh);
 
     //draw bricks
     for (i = 0; i < NROWS; i++) {
@@ -57,15 +64,20 @@ $(function () {
             BRICKWIDTH - PADDING,
             BRICKHEIGHT - PADDING
           );
+        } else if (bricks[i][j] == 2) {
+          img(
+            "img/monster_1.png",
+            j * BRICKWIDTH,
+            i * BRICKHEIGHT,
+            BRICKWIDTH - PADDING,
+            BRICKHEIGHT - PADDING
+          );
+
+          ctx.fillStyle = "#ff0000";
+          ctx.font = "20px Arial";
+          ctx.fillText("M", j * BRICKWIDTH + 20, i * BRICKHEIGHT + 25);
         }
       }
-    }
-
-    if (is_leftPannel && paddlex > 0) {
-      paddlex -= 5;
-    }
-    if (is_rightPannel && paddlex + paddlew < WIDTH) {
-      paddlex += 5;
     }
 
     x += dx;
@@ -86,7 +98,7 @@ $(function () {
     }
     if (y <= 0 + radius) {
       dy = -dy;
-    } else if (y >= HEIGHT - radius) {
+    } else if (y >= HEIGHT - radius - paddlePaddingBottom) {
       if (x > paddlex && x < paddlex + paddlew) {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
@@ -120,7 +132,12 @@ $(function () {
     ctx.closePath();
     ctx.fill();
   }
-
+  function img(img, x, y, w, h) {
+    ctx.beginPath();
+    ctx.drawImage(img, x, y, w, h);
+    ctx.closePath();
+    ctx.fill();
+  }
   function init_faddle() {
     paddlex = WIDTH / 2;
     paddleh = 10;
@@ -128,12 +145,13 @@ $(function () {
   }
 
   function init_bricks() {
-    NROWS = 6;
-    NCOLS = 5;
+    NROWS = difficulty_NROWS[difficulty - 1];
+    NCOLS = difficulty_NCOLS[difficulty - 1];
     PADDING = 1;
     BRICKWIDTH = WIDTH / NCOLS;
-    BRICKHEIGHT = 15;
-
+    BRICKHEIGHT = 40;
+    //set count of monster (0~5) * difficulty(1~3)
+    monsterCnt = Math.floor(Math.random() * 5) * difficulty;
     bricks = new Array(NROWS);
     for (i = 0; i < NROWS; i++) {
       bricks[i] = new Array(NCOLS);
@@ -141,7 +159,14 @@ $(function () {
         bricks[i][j] = 1;
       }
     }
+    //add monster
+    for (i = 0; i < monsterCnt; i++) {
+      var row = Math.floor(Math.random() * NROWS);
+      var col = Math.floor(Math.random() * NCOLS);
+      bricks[row][col] = 2;
+    }
   }
+
   function onMouseMove(e) {
     if (e.pageX >= canvasMinX && e.pageX <= canvasMaxX) {
       paddlex = e.pageX - canvasMinX - paddlew / 2;
@@ -150,23 +175,6 @@ $(function () {
   init();
   init_faddle();
   init_bricks();
-
-  //Event
-  $(document).on("keydown", function (e) {
-    if (e.which == 37) {
-      is_leftPannel = true;
-    } else if (e.which == 39) {
-      is_rightPannel = true;
-    }
-  });
-
-  $(document).on("keyup", function (e) {
-    if (e.which == 37) {
-      is_leftPannel = false;
-    } else if (e.which == 39) {
-      is_rightPannel = false;
-    }
-  });
 
   $(document).mousemove(onMouseMove);
 });
