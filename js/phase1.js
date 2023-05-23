@@ -58,7 +58,10 @@ $(function () {
     for (i = 0; i < NROWS; i++) {
       for (j = 0; j < NCOLS; j++) {
         if (bricks[i][j] == 1) {
-          rect(
+          var image = new Image();
+          image.src = "img/phase1/brick.png";
+          img(
+            image,
             j * BRICKWIDTH,
             i * BRICKHEIGHT,
             BRICKWIDTH - PADDING,
@@ -67,7 +70,7 @@ $(function () {
         } else if (bricks[i][j] >= 2) {
           var image = new Image();
           var idx = bricks[i][j] - 1;
-          image.src = "img/monster_" + idx + ".png";
+          image.src = "img/phase1/monster" + idx + ".png";
           img(
             image,
             j * BRICKWIDTH,
@@ -154,7 +157,7 @@ $(function () {
     BRICKWIDTH = WIDTH / NCOLS;
     BRICKHEIGHT = 40;
     //set count of monster (0~5) * difficulty(1~3)
-    monsterCnt = Math.floor(Math.random() * 5) * difficulty;
+    monsterCnt = difficulty * 3;
     bricks = new Array(NROWS);
     for (i = 0; i < NROWS; i++) {
       bricks[i] = new Array(NCOLS);
