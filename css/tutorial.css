@@ -1,7 +1,7 @@
 * {margin: 0; 
   padding: 0;}
 
-body {width:960px;
+body {width:1200px;
   margin: 0 auto;}
 
 #comic-container {
@@ -12,14 +12,20 @@ body {width:960px;
 }
 
 #comic-image {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 85%;
+  /* max-height: 100%; */
 }
 
 #prev_img, #next_img {
   cursor: pointer;
 }
 
-#prev_img:hover, #next_img:hover {
+#prev_img:hover, #next_img:hover, #skip-button:hover {
   opacity: 0.7;
+}
+
+#skip-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
