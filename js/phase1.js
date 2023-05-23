@@ -11,9 +11,9 @@ $(function () {
   var canvasMinX;
   var canvasMaxX;
   var is_gameover = false;
-  var difficulty = 1;
-  var difficulty_NROWS = [3, 4, 5];
-  var difficulty_NCOLS = [3, 4, 5];
+  var difficulty;
+  var difficulty_NROWS = [4, 5, 6];
+  var difficulty_NCOLS = [4, 5, 6];
 
   //paddle
   var paddlex;
@@ -44,7 +44,7 @@ $(function () {
 
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
-    difficulty = 1;
+    difficulty = 3;
     //animation
     anim = requestAnimationFrame(draw);
   }
@@ -64,18 +64,17 @@ $(function () {
             BRICKWIDTH - PADDING,
             BRICKHEIGHT - PADDING
           );
-        } else if (bricks[i][j] == 2) {
+        } else if (bricks[i][j] >= 2) {
+          var image = new Image();
+          var idx = bricks[i][j] - 1;
+          image.src = "img/monster_" + idx + ".png";
           img(
-            "img/monster_1.png",
+            image,
             j * BRICKWIDTH,
             i * BRICKHEIGHT,
             BRICKWIDTH - PADDING,
             BRICKHEIGHT - PADDING
           );
-
-          ctx.fillStyle = "#ff0000";
-          ctx.font = "20px Arial";
-          ctx.fillText("M", j * BRICKWIDTH + 20, i * BRICKHEIGHT + 25);
         }
       }
     }
@@ -90,6 +89,10 @@ $(function () {
       if (bricks[row][col] == 1) {
         dy = -dy;
         bricks[row][col] = 0;
+      } else if (bricks[row][col >= 2]) {
+        dy = -dy;
+        bricks[row][col] = 0;
+        //TODO : item 으로 인한 효과
       }
     }
 
@@ -163,7 +166,8 @@ $(function () {
     for (i = 0; i < monsterCnt; i++) {
       var row = Math.floor(Math.random() * NROWS);
       var col = Math.floor(Math.random() * NCOLS);
-      bricks[row][col] = 2;
+      var idx = Math.floor(Math.random() * 3) + 2;
+      bricks[row][col] = idx;
     }
   }
 
