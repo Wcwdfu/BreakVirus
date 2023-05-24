@@ -130,7 +130,6 @@ function drawBricks() {
 function init_paddle() {
   paddlex = WIDTH / 2;
   paddleh = 10;
-  paddlew = 75;
 }
 function init_bgi(difficulty) {
   // status 1, 2
@@ -189,10 +188,11 @@ function init_game() {
       score = jsonData[0].score;
       damage = jsonData[0].damage;
       radius = jsonData[0].radius;
+      paddlew = jsonData[0].paddlew;
+      init_html();
       gameSwitch();
     },
   });
-  //animation
 }
 
 function gameSwitch() {
@@ -219,16 +219,31 @@ function updateBricks() {
       dy = -dy;
       updateItem(bricks[row][col] - 1);
       bricks[row][col] = 0;
-      //TODO : item 으로 인한 효과
     }
   }
 }
 function updateItem(idx) {
   //TODO : item 으로 인한 효과
+  paddlew += 20;
+  jsonData[0].paddlew = paddlew;
+
+  //TODO : 데미지 증가
+  damage += 1;
+  jsonData[0].damage = damage;
+
+  //TODO : 라이프 추가
+  life += 1;
+  jsonData[0].life = life;
+
+  //TODO : 공 크기 증가
+  radius += 3;
+  jsonData[0].radius = radius;
+
   switch (idx) {
     case 1:
       //TODO : 바 길이 증가
-      paddlew += 10;
+      paddlew += 20;
+      jsonData[0].paddlew = paddlew;
       break;
     case 2:
       //TODO : 데미지 증가
@@ -284,6 +299,18 @@ function updateGameStatus(game) {
 function onMouseMove(e) {
   if (e.pageX >= canvasMinX && e.pageX <= canvasMaxX) {
     paddlex = e.pageX - canvasMinX - paddlew / 2;
+  }
+}
+function init_html() {
+  switch (gameStatus) {
+    case 1:
+      $("#title").text("Phase 1");
+      break;
+    case 2:
+      $("#title").text("Phase 2");
+      break;
+    default:
+      break;
   }
 }
 function init_phase1() {
