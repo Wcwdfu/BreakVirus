@@ -34,8 +34,10 @@ $(document).ready(function() {
 
     if (pageIndex === 10) {
       $("#next_img").hide();
+      $("#skip").html('<img src="img/tutorialImg/next.png" width="180" alt="Skip">');
     } else {
       $("#next_img").show();
+      $("#skip").html('<img src="img/tutorialImg/skip.png" width="180" alt="Skip">');
     }
   }
 
