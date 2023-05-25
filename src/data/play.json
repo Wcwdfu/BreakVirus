@@ -1,11 +1,1 @@
-[
-  {
-    "life": 3,
-    "score": 0,
-    "status": 1,
-    "difficulty": 1,
-    "damage": 1,
-    "radius": 10,
-    "paddlew": 75
-  }
-]
+{"playing":1,"difficulty":1,"life":3,"score":0,"damage":2,"radius":100,"paddlew":135}
