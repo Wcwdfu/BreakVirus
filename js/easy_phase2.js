@@ -115,7 +115,7 @@ var time = 0;
 // 1초마다 카운트 업데이트
 setInterval(function() {
   time++;
-  countdownElement.text(time);
+  countdownElement.text("time: "+time);
 }, 1000);
   
 
@@ -238,14 +238,9 @@ setInterval(function() {
           easy_boss=false;
         }
 
-      }
-      bosshp--;
-      bosshit.play();
-      if (bosshp == 0) {
-        bossdie.play();
-        is_gamewin = true;
-      }
+      
     }
+    
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
@@ -289,8 +284,7 @@ setInterval(function() {
       anim = window.requestAnimationFrame(easydraw);
     }
   }
-
-  }
+}
 
   //노말 보스 모드 이야기  //노말 보스 모드 이야기  //노말 보스 모드 이야기
   //노말 보스 모드 이야기  //노말 보스 모드 이야기  //노말 보스 모드 이야기
@@ -570,6 +564,7 @@ if(hard_boss){
       if(life>0){
         x = 480;
         y = 400;
+        score-=5000;
         atkx1=Math.random()*900;
         atky1=0;
         bomb.play();
@@ -582,6 +577,7 @@ if(hard_boss){
       if(life>0){
         x = 480;
         y = 400;
+        score-=5000;
         atkx2=Math.random()*900;
         atky2=0;
         bomb.play();
