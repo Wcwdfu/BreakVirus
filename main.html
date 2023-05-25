@@ -2,15 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="TeamPrj.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="TeamPrj.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <title>컴공왕국을 지켜라</title>
   </head>
   <body>
     <div id="main">
       <div id="title">
-        <h1>컴공왕국을 지켜라</h1>
+        <h1>컴공왕국을 지켜라!!</h1>
       </div>
       <div class="menu" id="start_btn">
         <h1>Start</h1>
@@ -18,9 +18,28 @@
       <div class="menu" id="setting_btn">
         <h1>Setting</h1>
       </div>
-      <div class="menu" id="score_btn">
-        <h1>Score</h1>
+      <div class="menu" id="how_to_play_btn">
+        <h1>How to play</h1>
       </div>
+    </div>
+    <div id="setting_screen" style="display: none;">
+      <h1>Settings</h1>
+      <div>
+        <input type="checkbox" id="bgm_checkbox" />
+        <label for="bgm_checkbox">BGM</label>
+      </div>
+      <div>
+        <input type="checkbox" id="bgm_checkbox" />
+        <label for="infinite_checkbox">Infinite Life Mode</label>
+      </div>
+      <button id="setting_confirm_btn">Confirm</button>
+      <button id="setting_back_btn">Back</button>
+    </div>
+
+    <div id="how_to_play_screen" style="display: none;">
+      <h1>How to Play</h1>
+      <img src="img/how_to.jpg" alt="How to Play" />
+      <button id="how_to_play_back_btn">Back</button>
     </div>
   </body>
 </html>
