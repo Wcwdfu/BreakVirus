@@ -35,6 +35,7 @@ $(function () {
   var BRICKHEIGHT;
   var PADDING;
   // 보스관련
+
   var ix=340;
   var iy=100;
   var vx=2;
@@ -100,6 +101,7 @@ $(function () {
   //스코어
   var score=0;
 
+
   var ctx;
   var anim;
 
@@ -125,6 +127,7 @@ setInterval(function() {
     ebimg.onload=function(){
       ebimages[index]=ebimg;
     }
+
   });
 
   normalbosslist.forEach(function(src,index){
@@ -153,6 +156,7 @@ setInterval(function() {
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
     //animation
+
     if(easy_boss){
       anim = requestAnimationFrame(easydraw);
       bgi.src ="img/backimg/phase1-2.png"
@@ -177,6 +181,7 @@ setInterval(function() {
       bgi.src ="img/backimg/phase3-2.png"
     }
     startgame=true;
+
   }
 
   if(startgame){
@@ -197,19 +202,22 @@ setInterval(function() {
     ball(x, y, radius);
     rect(paddlex, HEIGHT - paddleh, paddlew, paddleh);
     drawbosshp();
+
     $("#life").text("Life: "+ life);
     $("#score").text("Score: "+ score);
 
     if(bosshp>0){
       easyboss(ix,iy)
+
     }
-    
+
     x += dx;
     y += dy;
     ix += vx;
     iy += vy;
 
     //보스충돌감지
+
       if (bosshp>0 && x>ix+10 && x<ix+290 && y>iy+20 && y<iy+250) {
         dy = -dy;
         dx = -dx;
@@ -229,7 +237,15 @@ setInterval(function() {
           score+=10000
           easy_boss=false;
         }
+
       }
+      bosshp--;
+      bosshit.play();
+      if (bosshp == 0) {
+        bossdie.play();
+        is_gamewin = true;
+      }
+    }
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
@@ -241,7 +257,7 @@ setInterval(function() {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
       } else {
-        if(life>1){
+        if (life > 1) {
           life--;
           ix = 380;
           iy = 100;
@@ -249,21 +265,23 @@ setInterval(function() {
           y = 400;
           score-=2000;
         }else{
+
           is_gameover = true;
         }
       }
     }
     //보스움직임제한
-    if(ix<0||ix>660){
-      vx=  -vx;
+    if (ix < 0 || ix > 660) {
+      vx = -vx;
     }
-    if(iy<0||iy>200){
+    if (iy < 0 || iy > 200) {
       vy = -vy;
     }
+
     if(imgindex>=ebimages.length){
       imgindex=0;
-    }
 
+    }
 
     if (is_gameover) {
       window.cancelAnimationFrame(anim);
@@ -629,10 +647,11 @@ if(hard_boss){
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
+
   function drawbosshp() {
-  ctx.font = "24px Arial";
-  ctx.fillStyle = "black";
-  ctx.fillText("Boss HP: "+bosshp, 8, 30);
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Boss HP: " + bosshp, 8, 30);
   }
 
   function clear() {
@@ -646,6 +665,7 @@ if(hard_boss){
       var ebimage = ebimages[imgindex];
       ctx.drawImage(ebimage, ix, iy, 300, 300);
      imgindex++;
+
     }
   }
   // 노말 보스 그래픽
@@ -688,8 +708,8 @@ if(hard_boss){
   }
 
 
-  function bgimage(){
-    ctx.drawImage(bgi,0,0,canvas.width,canvas.height);
+  function bgimage() {
+    ctx.drawImage(bgi, 0, 0, canvas.width, canvas.height);
   }
 
   function ball(x, y, r) {

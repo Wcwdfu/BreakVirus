@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 960px;
+  margin: 0 auto;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+
+#title {
+  height: 40px;
+  font-family: "Alkatra", cursive;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+header > nav {
+  height: 40px;
+  overflow: hidden;
+}
+.main-menu {
+  display: block;
+  float: left;
+  width: 30%;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: black;
+}
+#content {
+  margin-top: 120px;
+  padding: 10px;
+}
+
+#canvas {
+  border: 3px solid lightgray;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+#canvas:focus {
+  border-color: dodgerblue;
+  outline: none;
+}

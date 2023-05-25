@@ -1,0 +1,13 @@
+.menu {
+	position: fixed;
+	font-size: 50px;
+}
+
+#title {
+	position: fixed;
+	font-size: 70px;
+}
+
+.page {
+	display: none;
+}
