@@ -10,18 +10,23 @@
   <body>
     <div id="main">
       <div id="title">
-        <h1>컴공왕국을 지켜라!!</h1>
+        <img src="img/mainImg/title.png" alt="Title" />
       </div>
       <div class="menu" id="start_btn">
-        <h1>Start</h1>
+        <img src="img/mainImg/start_1.png" alt="start" />
       </div>
-      <div class="menu" id="setting_btn">
-        <h1>Setting</h1>
+      <div class="menu" id="settings_btn">
+        <img src="img/mainImg/settings_1.png" alt="settings" />
       </div>
       <div class="menu" id="how_to_play_btn">
-        <h1>How to play</h1>
+        <img src="img/mainImg/htp_1.png" alt="howToPlay" />
       </div>
     </div>
+
+    <audio id="hover_sound">
+      <source src="sound/mainSound/hover_sound.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="setting_screen" style="display: none;">
       <h1>Settings</h1>
       <div>
@@ -38,8 +43,9 @@
 
     <div id="how_to_play_screen" style="display: none;">
       <h1>How to Play</h1>
-      <img src="img/how_to.jpg" alt="How to Play" />
+      <img src="img/mainImg/how_to.jpg" alt="How to Play" />
       <button id="how_to_play_back_btn">Back</button>
     </div>
+
   </body>
 </html>

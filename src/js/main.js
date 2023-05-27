@@ -1,10 +1,35 @@
 $(document).ready(function() {
-	set_menu();
-	$("#start_btn h1").hover(function() { $(this).css("color", "red"); }, function() { $(this).css("color", "black"); });
 
-	$("#setting_btn h1").hover(function() { $(this).css("color", "red"); }, function() { $(this).css("color", "black"); });
+	$("#start_btn img").hover(
+		function() {
+			$("#start_btn img").attr("src", "img/mainImg/start_2.png");
+			playHoverSound();
+		  }, function() {
+			$("#start_btn img").attr("src", "img/mainImg/start_1.png");
+		  });
 
-	$("#how_to_play_btn h1").hover(function() { $(this).css("color", "red"); }, function() { $(this).css("color", "black"); });
+	$("#settings_btn img").hover(
+		function() {
+			$("#settings_btn img").attr("src", "img/mainImg/settings_2.png");
+			playHoverSound();
+		}, function() { 
+			$("#settings_btn img").attr("src", "img/mainImg/settings_1.png");
+		});
+
+	$("#how_to_play_btn img").hover(
+		function() {
+		$("#how_to_play_btn img").attr("src", "img/mainImg/htp_2.png");
+		playHoverSound();
+	}, function() { 
+		$("#how_to_play_btn img").attr("src", "img/mainImg/htp_1.png");
+	});
+
+	// hover시 효과음
+	function playHoverSound() {
+        var audio = document.getElementById("hover_sound");
+        audio.currentTime = 0;
+        audio.play();
+      }
 
 	// Start 버튼 클릭
 	$("#start_btn").click(function() {
@@ -12,45 +37,33 @@ $(document).ready(function() {
 	});
 
 	// Setting 버튼 클릭
-	$("#setting_btn").click(function() {
-		$("#main").css("display", "none");
+	$("#settings_btn").click(function() {
+		$("#main").hide();
 		$("#setting_screen").show();
 	});
 
 	// How to play 버튼 클릭
 	$("#how_to_play_btn").click(function() {
-		$("#main").css("display", "none");
+		$("#main").hide();
 		$("#how_to_play_screen").show();
 	});
 
 	// 설정창에서 Confirm 버튼 클릭
 	$("#setting_confirm_btn").click(function() {
 		$("#setting_screen").hide();
-		$("#main").css("display", "block");
+		$("#main").show();
 	});
 
 	// 설정창 화면에서 Back 버튼 클릭
 	$("#setting_back_btn").click(function() {
 		$("#setting_screen").hide();
-		$("#main").css("display", "block");
+		$("#main").show();
 	});
 
 	// How to play 화면에서 Back 버튼 클릭
 	$("#how_to_play_back_btn").click(function() {
 		$("#how_to_play_screen").hide();
-		$("#main").css("display", "block");
+		$("#main").show();
 	});
 	  
 });
-
-function set_menu() {
-	var t = ($(window).height() - $("#start_btn").height())/20;
-	var l = ($(window).width() - $("#title").width())/2;
-	$("#title").css( {left: l, top: 2*t} );
-	l = ($(window).width() - $("#start_btn").width())/2;
-	$("#start_btn").css( {left: l, top: 10*t} );
-	l = ($(window).width() - $("#setting_btn").width())/2;
-	$("#setting_btn").css( {left: l, top: 14*t} );
-	l = ($(window).width() - $("#how_to_play_btn").width())/2;
-	$("#how_to_play_btn").css( {left: l, top: 18*t} );
-}
