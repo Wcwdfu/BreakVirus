@@ -10,7 +10,33 @@
 	margin: 10px 0;
   }
 
+  #settings_back:hover, #settings_ok:hover, #htp_back:hover {
+	opacity: 0.8;
+  }
+
   #setting_screen,
   #how_to_play_screen {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+  }
+
+  #bgm_checkbox, #infL_checkbox {
 	display: none;
+  }
+
+  #left_character {
+	position: absolute;
+	left: 50px; /* 왼쪽 캐릭터 이미지의 왼쪽 여백 */
+	top: 68%; /* 화면 세로 중앙에 위치 */
+	transform: translateY(-50%); /* 세로 중앙 정렬 */
+  }
+
+  #right_character {
+	position: absolute;
+	right: 50px; /* 오른쪽 캐릭터 이미지의 오른쪽 여백 */
+	top: 68%; /* 화면 세로 중앙에 위치 */
+	transform: translateY(-50%); /* 세로 중앙 정렬 */
   }

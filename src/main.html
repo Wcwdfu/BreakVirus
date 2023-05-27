@@ -12,6 +12,9 @@
       <div id="title">
         <img src="img/mainImg/title.png" alt="Title" />
       </div>
+      <div id="left_character">
+        <img src="img/mainImg/boy.png" alt="Left Character" />
+      </div>
       <div class="menu" id="start_btn">
         <img src="img/mainImg/start_1.png" alt="start" />
       </div>
@@ -21,31 +24,49 @@
       <div class="menu" id="how_to_play_btn">
         <img src="img/mainImg/htp_1.png" alt="howToPlay" />
       </div>
+      <div id="right_character">
+        <img src="img/mainImg/mob.png" alt="Right Character" />
+      </div>
+    </div>
+
+    <div id="setting_screen" style="display: none;">
+      <div class="menu" id="setting_title">
+        <img src="img/mainImg/settings_t.png" alt="STitle" />
+      </div>
+      <div>
+        <input type="checkbox" id="bgm_checkbox" checked/>
+        <label for="bgm_checkbox">
+          <img id="bgm_checkbox_img" src="img/mainImg/bgm_checked.png" alt="BGM" />
+        </label>
+      </div>
+      <div>
+        <input type="checkbox" id="infL_checkbox" />
+        <label for="infL_checkbox">
+          <img id="infinite_checkbox_img" src="img/mainImg/infL_unchecked.png" alt="Infinite Life Mode" />
+        </label>
+      </div>
+      <div class="menu">
+        <img id="settings_ok" src="img/mainImg/ok_button.png" alt="SOK" />
+        <img id="settings_back" src="img/mainImg/back_button.png" alt="SBack" />
+      </div>
+    </div>
+
+    <div id="how_to_play_screen" style="display: none;">
+      <div class="menu" id="htp_title">
+        <img src="img/mainImg/htp_t.png" alt="HTPTitle" />
+      </div>
+      <img src="img/mainImg/how_to.jpg" alt="How to Play" />
+      <div class="menu" id="htp_back">
+        <img src="img/mainImg/back_button.png" alt="HTPBack" />
+      </div>
     </div>
 
     <audio id="hover_sound">
       <source src="sound/mainSound/hover_sound.mp3" type="audio/mpeg">
     </audio>
-
-    <div id="setting_screen" style="display: none;">
-      <h1>Settings</h1>
-      <div>
-        <input type="checkbox" id="bgm_checkbox" />
-        <label for="bgm_checkbox">BGM</label>
-      </div>
-      <div>
-        <input type="checkbox" id="bgm_checkbox" />
-        <label for="infinite_checkbox">Infinite Life Mode</label>
-      </div>
-      <button id="setting_confirm_btn">Confirm</button>
-      <button id="setting_back_btn">Back</button>
-    </div>
-
-    <div id="how_to_play_screen" style="display: none;">
-      <h1>How to Play</h1>
-      <img src="img/mainImg/how_to.jpg" alt="How to Play" />
-      <button id="how_to_play_back_btn">Back</button>
-    </div>
-
+    <audio id="click_sound">
+      <source src="sound/mainSound/click_sound.mp3" type="audio/mpeg">
+    </audio>
+    
   </body>
 </html>
