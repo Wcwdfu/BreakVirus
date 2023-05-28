@@ -1,5 +1,9 @@
 $(init_game);
 
+var gameStatus; // 게임 상태
+var settingData; // setting Data
+var playingData; // playing Data
+
 var difficulty; // 0,1,2 -> easy , normal, hard
 var life; // 라이프
 var score; // 점수
@@ -25,9 +29,12 @@ var difficulty_NCOLS = [4, 5, 6];
 
 var bgi = new Image(); // 배경 이미지
 var backgroundImgs = [
-  "img/backimg/phase1-1.jpg",
-  "img/backimg/phase2-1.png",
-  "img/backimg/phase3-1.png",
+  "img/background/easy1.jpeg",
+  "img/background/easy2.png",
+  "img/background/normal1.png",
+  "img/background/normal2.png",
+  "img/background/hard1.png",
+  "img/background/hard2.png",
 ];
 var monsterImgs = [
   "img/monster/monster1.png",
@@ -54,7 +61,7 @@ var PADDING; // 벽돌 간격
 var ctx; // 캔버스 컨텍스트
 var anim; // 애니메이션
 
-
+var bossHp = 10; // 보스 체력
 //////////////////////////////////////////////////
 //-------------------- draw---------------------//
 //////////////////////////////////////////////////
@@ -81,6 +88,11 @@ function drawImg(img, x, y, w, h) {
   ctx.drawImage(img, x, y, w, h);
   ctx.closePath();
   ctx.fill();
+}
+function drawBossHp(hp, x, y) {
+  ctx.font = "24px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("Boss HP: " + hp, x, y);
 }
 
 function drawBgi(image) {
@@ -124,7 +136,9 @@ function init_paddle() {
 }
 function init_bgi(difficulty) {
   var level = 0;
-  bgi.src = backgroundImgs[difficulty-1];
+  if (gameStatus == 1) level = 2 * difficulty - 1;
+  else if (gameStatus == 2) level = 2 * difficulty;
+  bgi.src = backgroundImgs[level - 1];
 }
 function init_bricks() {
   NROWS = difficulty_NROWS[difficulty - 1];
@@ -134,7 +148,7 @@ function init_bricks() {
   BRICKHEIGHT = 40;
 
   //set counts of monster (difficulty * 3)
-  monsterCnt = difficulty * 4;
+  monsterCnt = difficulty * 3;
   bricks = new Array(NROWS);
   for (i = 0; i < NROWS; i++) {
     bricks[i] = new Array(NCOLS);
@@ -151,6 +165,7 @@ function init_bricks() {
     bricks[row][col] = idx;
   }
 }
+function init_boss() {}
 function init_game() {
   //canvas 가져오기
   ctx = $("#canvas")[0].getContext("2d");
@@ -163,37 +178,54 @@ function init_game() {
   $.ajax({
     url: "data/setting.json",
     dataType: "json",
-    success: function (settingData) {
+    success: function (data1) {
+      settingData = data1;
+
       $.ajax({
         url: "data/play.json",
         dataType: "json",
-        success: function (playingData) {
-        if(playingData.playing == 0 || playingData.playing == undefined){
-          //첫 게임  
-          difficulty = settingData.difficulty;
-            score = settingData.score;
-            life = settingData.life;
-            damage = settingData.damage;
-            radius = settingData.radius;
-            paddlew = settingData.paddlew;
-        }else{
-          //이어서 게임
-          difficulty = playingData.difficulty;
-          score = playingData.score;
-          life = playingData.life;
-          damage = playingData.damage;
-          radius = playingData.radius;
-          paddlew = playingData.paddlew;
-        }
-        
-        init_html();
-        init_phase1();
+        success: function (data2) {
+          playingData = data2;
+
+          //첫 게임
+          if (gameStatus == 1 && difficulty == 1) {
+            gameStatus = settingData[0].status;
+            difficulty = settigData[0].difficulty;
+            life = settingData[0].life;
+            score = settingData[0].score;
+            damage = settingData[0].damage;
+            radius = settingData[0].radius;
+            paddlew = settingData[0].paddlew;
+          } else {
+            //그외
+            gameStatus = playingData[0].status;
+            difficulty = playingData[0].difficulty;
+            life = playingData[0].life;
+            score = playingData[0].score;
+            damage = playingData[0].damage;
+            radius = playingData[0].radius;
+            paddlew = playingData[0].paddlew;
+          }
+          init_html();
+          gameSwitch();
         },
       });
     },
   });
 }
 
+function gameSwitch() {
+  switch (gameStatus) {
+    case 1:
+      init_phase1();
+      break;
+    case 2:
+      init_phase2();
+      break;
+    default:
+      break;
+  }
+}
 function updateBricks() {
   //Have We Hit a Bricks?
   var row = Math.floor(y / (BRICKHEIGHT + PADDING));
@@ -219,18 +251,22 @@ function updateItem(idx) {
     case 1:
       //TODO : 바 길이 증가
       paddlew += 20;
+      playingData[0].paddlew = paddlew;
       break;
     case 2:
       //TODO : 데미지 증가
       damage += 1;
+      playingData[0].damage = damage;
       break;
     case 3:
       //TODO : 라이프 추가
       life += 1;
+      playingData[0].life = life;
       break;
     case 4:
       //TODO : 공 크기 증가
       radius += 3;
+      playingData[0].radius = radius;
       break;
     default:
       break;
@@ -262,59 +298,55 @@ function updateGameStatus(game) {
   if (is_gameover) {
     //게임 종료
     window.cancelAnimationFrame(anim);
-    //TODO: 종료 페이지로 이동
-
   } else {
     //잡몹전 일떄
+    if (gameStatus == 1) {
       if (monsterCnt == 0) {
         //잡몹전 우승
-        window.location.href = "http://localhost:8080/src/easy_phase2.html";
-        saveData();
-        window.cancelAnimationFrame(anim);
+        gameStatus = 2;
+        playingData[0].status = gameStatus;
+        gameSwitch();
       } else {
         anim = requestAnimationFrame(game);
       }
+    } else {
+      //보스전 일때
+      if (bossHp == 0) {
+        //마지막 게임이면 끝
+        if (difficulty == 3) {
+          //TODO : 게임 끝
+          window.cancelAnimationFrame(anim);
+        } else {
+          //다음 게임
+          difficulty++;
+          playingData[0].difficulty = difficulty;
+          gameStatus = 1;
+          playingData[0].status = gameStatus;
+          gameSwitch();
+        }
+      } else {
+        anim = requestAnimationFrame(game);
+      }
+    }
   }
 }
-function saveData(){
-  radius = 100;
-  var body = {
-    playing: 1,
-    difficulty: difficulty,
-    life: life,
-    score: score,
-    damage: damage,
-    radius: radius,
-    paddlew: paddlew
-  }
-  $.ajax({
-    url: "http://localhost:8080/save",
-    contentType: 'application/json',
-    type: "POST",
-    async: false,
-    data: JSON.stringify(body),
-    success: function (data) {
-      console.log("save success");
-    },
-  });
-}
+
 function onMouseMove(e) {
   if (e.pageX >= canvasMinX && e.pageX <= canvasMaxX) {
     paddlex = e.pageX - canvasMinX - paddlew / 2;
   }
 }
 function init_html() {
-  if(difficulty == 1)
-  {
-    $("#title").text("Easy Phase 1");
-  }else if (difficulty == 2)
-  {
-    $("#title").text("Normal Phase 1");
-  }else if (difficulty == 3)
-  {
-    $("#title").text("Hard Phase 1");
+  switch (gameStatus) {
+    case 1:
+      $("#title").text("Phase 1");
+      break;
+    case 2:
+      $("#title").text("Phase 2");
+      break;
+    default:
+      break;
   }
-    
 }
 function init_phase1() {
   //phase1 init
@@ -325,6 +357,17 @@ function init_phase1() {
 
   //phase1 start
   anim = requestAnimationFrame(phase1);
+  $(document).mousemove(onMouseMove);
+}
+function init_phase2() {
+  //phase1 init
+
+  init_paddle();
+  init_boss();
+  init_bgi(difficulty);
+
+  //phase1 start
+  anim = requestAnimationFrame(phase2);
   $(document).mousemove(onMouseMove);
 }
 //잡몹
@@ -341,4 +384,19 @@ function phase1() {
   updateBricks();
   updateDirection();
   updateGameStatus(phase1);
+}
+//보스전
+function phase2() {
+  clear();
+  drawBgi(bgi);
+  drawBall(x, y, radius);
+  drawBricks();
+  drawPaddle(paddlex, HEIGHT - paddleh - paddleMarginBottom, paddlew, paddleh);
+
+  x += dx;
+  y += dy;
+  updateBricks();
+
+  updateDirection();
+  updateGameStatus(phase2);
 }

@@ -2,15 +2,25 @@ const express = require("express");
 const fs = require('fs');
 const router = express.Router();
 
-router.get("/", function (req, res) {
+router.get("/t", function (req, res) {
   res.redirect("src/game.html");
 });
-router.get("/t", function (req, res) {
+router.get("/", function (req, res) {
+  var path = "src/data/playing.json";
+  var body = {};
+  fs.writeFile(path,JSON.stringify(body), (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error saving JSON data');
+    } else {
+      res.send('JSON data saved successfully');
+    }
+  });
   res.redirect("src/tutorial.html");
 });
 router.post("/save", function (req, res) {
   var body = req.body;
-  var path = "src/data/play.json"
+  var path = "src/data/playing.json"
   fs.writeFile(path,JSON.stringify(body), (err) => {
     if (err) {
       console.error(err);
@@ -20,6 +30,36 @@ router.post("/save", function (req, res) {
     }
   });
 });
+router.post("/saveSetting", function (req, res) {
+
+  var body = req.body;
+  var path = "src/data/setting.json";
+
+  fs.readFile(path,'utf-8', (err, data) => {
+    if(err){
+      console.error(err);
+      return;
+    }
+
+    
+  var json = JSON.parse(data);
+  json.bgm = body.bgm;
+  json.infinite = body.infinite;
+
+  
+  fs.writeFile(path,JSON.stringify(json), (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error saving JSON data');
+    } else {
+      res.send('JSON data saved successfully');
+    } 
+  });
+  });
+  
+});
+
+
 router.all("*", function (req, res) {
   res.status(404).send("<h1>ERROR - 페이지를 찾을 수 없습니다.</h1>");
 });

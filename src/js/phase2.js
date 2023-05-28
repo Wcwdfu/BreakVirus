@@ -12,7 +12,6 @@ $(function () {
   var canvasMaxX;
 
   var is_gameover = false;
-  var is_gamewin = false;
 
   var hardboss_head1 = false;
   var hardboss_head2 = false;
@@ -25,13 +24,6 @@ $(function () {
   //switch
   var startgame =false;
 
-  //bricks
-  var bricks;
-  var NROWS;
-  var NCOLS;
-  var BRICKWIDTH;
-  var BRICKHEIGHT;
-  var PADDING;
   // 보스관련
 
   var ix=340;
@@ -59,13 +51,10 @@ $(function () {
   bsatk2.src='img/nmatk2.png'
   var atkx1=Math.random()*900;
   var atkx2=Math.random()*900;
-  var atkx3=Math.random()*900;
   var atky1=0;
   var atky2=0;
-  var atky3=0;
   var atkdy1=4;
   var atkdy2=5;
-  var atkdy3=6;
   //보스스킬
   var skill1=new Image();
   skill1.src='img/skill/skill1.png'
@@ -91,6 +80,10 @@ $(function () {
   var bosslevel= 3;
   ////////////////////////////////////
 
+  var damage;
+  var bgm;
+  var infinite;
+
 
   var ctx;
   var anim;
@@ -115,9 +108,6 @@ document.addEventListener("click", mouseclick, false);
 function mouseclick(e){
 click=true;
 }
-  
-
-
 
   easybosslist.forEach(function(src,index){
     var ebimg=new Image();
@@ -155,10 +145,28 @@ click=true;
     canvasMaxX = canvasMinX + WIDTH;
     //animation
 
-    ctx.drawImage(startimg,0,200,960,230);
+    //TODO : 데이터 들고오기
+    $.ajax({
+      url: "data/playing.json",
+      dataType: "json",
+      async : false,
+      success: function (settingData) {
+        
+        bosslevel = settingData.difficulty;
+        life = settingData.life;
+        score = settingData.score;
+        damage = settingData.damage;
+        radius = settingData.radius;
+        paddlew = settingData.paddlew;
+        bgm = settingData.bgm;
+        infinite = settingData.infinite;
+
+      },
+    });
+  
+    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
     if(bosslevel==1){
-      bgi.src ="img/backimg/phase1-2.png"
-      anim = requestAnimationFrame(easydraw);
+      bgi.src ="img/backimg/phase1-2.png";
     }
     if(bosslevel==2){
       bosshp=20;
@@ -166,8 +174,7 @@ click=true;
       iy=100;
       vx=3;
       vy=3;
-      bgi.src ="img/backimg/phase2-2.png"
-      anim = requestAnimationFrame(normaldraw);
+      bgi.src ="img/backimg/phase2-2.png";
     }
     if(bosslevel==3){
       bosshp=30;
@@ -176,15 +183,14 @@ click=true;
       vx=1;
       vy=0;
       hardboss_head1=true;
-      bgi.src ="img/backimg/phase3-2.png"
-      anim = requestAnimationFrame(harddraw);
+      bgi.src ="img/backimg/phase3-2.png";
     }
     startgame=true;
   }
 
-  function gamestart(){
-    window.cancelAnimationFrame(anim);
-  }
+  // function gamestart(){
+  //   window.cancelAnimationFrame(anim);
+  // }
 
     
 
@@ -209,7 +215,7 @@ click=true;
   // 이지 보스 모드 이야기  // 이지 보스 모드 이야기  // 이지 보스 모드 이야기
   // 이지 보스 모드 이야기  // 이지 보스 모드 이야기  // 이지 보스 모드 이야기
   // 이지 보스 모드 이야기  // 이지 보스 모드 이야기  // 이지 보스 모드 이야기
-  if(bosslevel==1){
+
     function easydraw() {
     clear();
     bgimage();
@@ -218,8 +224,12 @@ click=true;
     drawbosshp();
 
     if(startgame)
-    ctx.drawImage(startimg,0,170,960,300);
-    $("#life").text("Life: "+ life);
+    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
+
+    if(infinite)
+      $("#life").text("Life: ∞");
+    else
+      $("#life").text("Life: "+ life);
     $("#score").text("Score: "+ score);
 
     if(bosshp>0){
@@ -239,45 +249,53 @@ click=true;
         dx = -dx;
         vx = -vx;
         vy = -vy;
-        if(bosshp==5){
+        if(bosshp<=5){
           if(vx<0) vx= 3;
           if(vx>0) vx= -3;
           if(vy<0) vy= 3;
           if(vy>0) vy= -3;
         }
-        bosshp--;
+        bosshp-=damage;
         score+=1200
-        bosshit.play();
-        if(bosshp==0){
-          bossdie.play();
+        if(bgm)
+          bosshit.play();
+        if(bosshp<=0){
+          if(bgm)
+            bossdie.play();
           score+=10000
-          bosslevel=0;
+          saveData();
+          nextLevel();
         }
     }
     
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     }
     if (y <= 0 + radius) {
       dy = -dy;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     } else if (y >= HEIGHT - radius) {
       if (x > paddlex && x < paddlex + paddlew) {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
-        bounce.play();
+        if(bgm)
+          bounce.play();
       } else {
         if (life > 1) {
           life--;
           x = 500;
           y = 400;
           score-=2000;
-          oops.play();
+          if(bgm)
+            oops.play();
         }else{
 
-          is_gameover = true;
+          if(!infinite)
+            is_gameover = true;
         }
       }
     }
@@ -300,14 +318,13 @@ click=true;
       anim = window.requestAnimationFrame(easydraw);
     }
   }
-}
 
   //노말 보스 모드 이야기  //노말 보스 모드 이야기  //노말 보스 모드 이야기
   //노말 보스 모드 이야기  //노말 보스 모드 이야기  //노말 보스 모드 이야기
   //노말 보스 모드 이야기  //노말 보스 모드 이야기  //노말 보스 모드 이야기
   
 
-  if(bosslevel==2){
+
 
     function normaldraw() {
     clear();
@@ -326,8 +343,13 @@ click=true;
       atky2+=atkdy2;
     }
     if(startgame)
-    ctx.drawImage(startimg,0,170,960,300);
-    $("#life").text("Life: "+ life);
+    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
+
+    if(infinite)
+      $("#life").text("Life: ∞");
+    else
+      $("#life").text("Life: "+ life);
+
     $("#score").text("Score: "+ score);
     
     x += dx;
@@ -342,35 +364,42 @@ click=true;
         dx = -dx;
         vx = -vx;
         vy = -vy;
-        if(bosshp==10){
+        if(bosshp<=10){
           if(vx<0) vx= 5;
           if(vx>0) vx= -5;
           if(vy<0) vy= 5;
           if(vy>0) vy= -5;
         }
-        bosshp--;
+        bosshp-=damage;
         score+=1600;
-        bosshit.play();
+        if(bgm)
+          bosshit.play();
 
-        if(bosshp==0){
-          bossdie.play();
+        if(bosshp<=0){
+          if(bgm)
+            bossdie.play();
           score+=25000;
           middle_boss=false
+          saveData();
+          nextLevel();
         }
       }
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     }
     if (y <= 0 + radius) {
       dy = -dy;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     } else if (y >= HEIGHT - radius) {
       if (x > paddlex && x < paddlex + paddlew) {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
-        bounce.play();
+        if(bgm)
+          bounce.play();
       } else {
         if(life>1){
           life--;
@@ -379,9 +408,11 @@ click=true;
           x = 500;
           y = 400;
           score-=3000;
-          oops.play();
+          if(bgm)
+            oops.play();
         }else{
-          is_gameover = true;
+          if(!infinite)
+            is_gameover = true;
         }
       }
     }
@@ -391,22 +422,26 @@ click=true;
       if(life>0){
         atkx1=Math.random()*900;
         atky1=0;
-        bomb.play();
+        if(bgm)
+          bomb.play();
         life--;
         score-=3000;
       }else{
-        is_gameover = true;
+        if(!infinite)
+            is_gameover = true;
       }
     }
      if(bosshp>0&&atkx2>paddlex-paddlew&&atkx2<paddlex+paddlew&&atky2>560){
       if(life>0){
         atkx2=Math.random()*900;
         atky2=0;
-        bomb.play();
+        if(bgm)
+          bomb.play();
         life--;
         score-=3000;
       }else{
-        is_gameover = true;
+        if(!infinite)
+            is_gameover = true;
       }
     }
 
@@ -425,12 +460,14 @@ click=true;
     if(bosshp>0&&atky1>580){
       atky1=0;
       atkx1=Math.random()*900;
-      nmbsatk.play();
+      if(bgm)
+        nmbsatk.play();
     }
     if(bosshp>0&&atky2>560){
       atky2=0;
       atkx2=Math.random()*900;
-      nmbsatk.play();
+      if(bgm)
+        nmbsatk.play();
     }
 
 
@@ -439,7 +476,6 @@ click=true;
     } else {
       anim = window.requestAnimationFrame(normaldraw);
     }
-  }
   }
   // 노말보스 공격
   function bsatkimg1(){
@@ -453,7 +489,6 @@ click=true;
   //하드 보스 모드 이야기  //하드 보스 모드 이야기  //하드 보스 모드 이야기
   //하드 보스 모드 이야기  //하드 보스 모드 이야기  //하드 보스 모드 이야기
 
-if(bosslevel==3){
     function harddraw() {
     clear();
     if(hardboss_head3){
@@ -480,8 +515,12 @@ if(bosslevel==3){
       atky2+=atkdy2;
     }
     if(startgame)
-    ctx.drawImage(startimg,0,170,960,300);
-    $("#life").text("Life: "+ life);
+    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
+    
+    if(infinite)
+      $("#life").text("Life: ∞");
+    else
+      $("#life").text("Life: "+ life);
     $("#score").text("Score: "+ score);
     
     x += dx;
@@ -495,10 +534,11 @@ if(bosslevel==3){
         dx = -dx;
         dy = -dy;
         vx = -vx;
-        bosshp--;
+        bosshp-=damage;
         headchange++;
         score+=2500;
-        bosshit.play();
+        if(bgm)
+          bosshit.play();
         if(headchange==3&&hardboss_head1){
           hardboss_head1=false;
           hardboss_head2=true;
@@ -520,34 +560,41 @@ if(bosslevel==3){
           iy=-50;
           headchange=0;
         }
-        if(bosshp==0){
-          bossdie.play();
+        if(bosshp<=0){
+          if(bgm)
+            bossdie.play();
           score+=60000
-          bosslevel=0;
+          saveData();
+          nextLevel();
         }
       }
 
     if (x >= WIDTH - radius || x <= 0 + radius) {
       dx = -dx;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     }
     if (y <= 0 + radius) {
       dy = -dy;
-      bounce.play();
+      if(bgm)
+        bounce.play();
     } else if (y >= HEIGHT - radius) {
       if (x > paddlex && x < paddlex + paddlew) {
         dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
         dy = -dy;
-        bounce.play();
+        if(bgm)
+          bounce.play();
       } else {
         if(life>1){
           life--;
           score-=5000;
           x = 500;
           y = 400;
-          oops.play();
+          if(bgm)
+            oops.play();
         }else{
-          is_gameover = true;
+          if(!infinite)
+            is_gameover = true;
         }
       }
     }
@@ -557,10 +604,12 @@ if(bosslevel==3){
         score-=5000;
         atkx1=Math.random()*900;
         atky1=0;
-        bomb.play();
+        if(bgm)
+          bomb.play();
         life--;
       }else{
-        is_gameover = true;
+        if(!infinite)
+            is_gameover = true;
       }
     }
      if(atkx2>paddlex-paddlew&&atkx2<paddlex+paddlew&&atky2>560){
@@ -568,10 +617,12 @@ if(bosslevel==3){
         score-=5000;
         atkx2=Math.random()*900;
         atky2=0;
-        bomb.play();
+        if(bgm)
+          bomb.play();
         life--;
       }else{
-        is_gameover = true;
+        if(!infinite)
+            is_gameover = true;
       }
     }
     //보스움직임제한
@@ -603,12 +654,14 @@ if(bosslevel==3){
     if(bosshp>0&&atky1>580){
       atky1=0;
       atkx1=Math.random()*900;
-      nmbsatk.play();
+      if(bgm)
+        nmbsatk.play();
     }
     if(bosshp>0&&atky2>560){
       atky2=0;
       atkx2=Math.random()*900;
-      nmbsatk.play();
+      if(bgm)
+        nmbsatk.play();
     }
 
     if(bosshp<16){
@@ -625,7 +678,6 @@ if(bosslevel==3){
       anim = window.requestAnimationFrame(harddraw);
     }
   }
-  }
   
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
@@ -637,12 +689,9 @@ if(bosslevel==3){
     ctx.fillStyle = "black";
     ctx.fillText("Boss HP: " + bosshp, 8, 30);
   }
-
   function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
   }
-
-
   // 이지 보스 그래픽
   function easyboss(ix, iy) {
     if (ebimages[imgindex]) {
@@ -672,16 +721,12 @@ if(bosslevel==3){
       imgindex++;
     }
   }
-  
   function drawskill1(){
     ctx.drawImage(skill1,840,10,100,80);
   }
-
-
   function bgimage() {
     ctx.drawImage(bgi, 0, 0, canvas.width, canvas.height);
   }
-
   function ball(x, y, r) {
     ctx.fillStyle = "#03158a";
     ctx.beginPath();
@@ -689,35 +734,18 @@ if(bosslevel==3){
     ctx.closePath();
     ctx.fill();
   }
-
   function rect(x, y, w, h) {
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.closePath();
     ctx.fill();
   }
-
-  function init_faddle() {
+  function init_paddle() {
     paddlex = WIDTH / 2;
     paddleh = 10;
     paddlew = 75;
   }
 
-  function init_bricks() {
-    NROWS = 6;
-    NCOLS = 5;
-    PADDING = 1;
-    BRICKWIDTH = WIDTH / NCOLS;
-    BRICKHEIGHT = 15;
-
-    bricks = new Array(NROWS);
-    for (i = 0; i < NROWS; i++) {
-      bricks[i] = new Array(NCOLS);
-      for (j = 0; j < NCOLS; j++) {
-        bricks[i][j] = 1;
-      }
-    }
-  }
   function onMouseMove(e) {
     if (e.pageX >= canvasMinX && e.pageX <= canvasMaxX) {
       if(!hardboss_head2){
@@ -726,15 +754,41 @@ if(bosslevel==3){
         var cursorX = e.pageX - canvasMinX;
         paddlex = canvasMaxX - cursorX - paddlew / 2;
       }
-
-      
     }
   }
 
+  function saveData(){
+    var body = {
+      difficulty: bosslevel+1,
+      life: life,
+      score: score,
+      damage: damage,
+      radius: radius,
+      paddlew: paddlew,
+      bgm: bgm,
+      infinite: infinite
+    }
+    $.ajax({
+      url: "http://localhost:8080/save",
+      contentType: 'application/json',
+      type: "POST",
+      async: false,
+      data: JSON.stringify(body),
+      success: function (data) {
+        console.log("save success");
+      },
+    });
+  }
+  function nextLevel(){
+    if(bosslevel == 3){
+      window.location.href = "http://localhost:8080/src/score.html";
+    }else{
+      window.location.href = "http://localhost:8080/src/phase1.html";
+    }
+  }
   init();
-  setTimeout(gamestart, 150);
-  init_faddle();
-  init_bricks();
+  // setTimeout(gamestart, 150);
+  init_paddle();
 
   $(document).mousemove(onMouseMove);
 });

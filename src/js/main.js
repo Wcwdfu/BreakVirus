@@ -44,6 +44,8 @@ $(document).ready(function() {
 
 	// hover시 효과음
 	function playHoverSound() {
+		if(!$("#bgm_checkbox").prop("checked"))
+			return;
         var audio = document.getElementById("hover_sound");
         audio.currentTime = 0;
         audio.play();
@@ -51,11 +53,28 @@ $(document).ready(function() {
 
 	// click시 효과음
 	function playClickSound() {
+		if(!$("#bgm_checkbox").prop("checked"))
+			return;
         var audio = document.getElementById("click_sound");
         audio.currentTime = 0;
         audio.play();
       }
-
+	function saveSetting() {
+		var body = {
+			bgm: $("#bgm_checkbox").prop("checked"),
+			infinite: $("#infL_checkbox").prop("checked")
+		}
+		$.ajax({
+			url: "http://localhost:8080/saveSetting",
+			contentType: 'application/json',
+			type: "POST",
+			async: false,
+			data: JSON.stringify(body),
+			success: function (data) {
+				console.log("save success");
+			},
+		});
+	}
 	// Start 버튼 클릭
 	$("#start_btn").click(function() {
 		playClickSound();
@@ -79,6 +98,7 @@ $(document).ready(function() {
 	// 설정창에서 Confirm 버튼 클릭
 	$("#settings_ok").click(function() {
 		playClickSound();
+		saveSetting();
 		$("#setting_screen").hide();
 		$("#main").show();
 	});
