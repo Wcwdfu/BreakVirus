@@ -25,6 +25,8 @@ var difficulty_NROWS = [4, 5, 6];
 var difficulty_NCOLS = [4, 5, 6];
 
 var bgi = new Image(); // 배경 이미지
+var startimg=new Image();
+startimg.src='img/backimg/start.png';
 var backgroundImgs = [
   "img/backimg/phase1-1.jpg",
   "img/backimg/phase2-1.png",
@@ -197,8 +199,6 @@ function init_game() {
     },
   });
 
-
-  
   init_html();
   init_phase1();
 }
@@ -222,6 +222,7 @@ function updateBricks() {
       if(bgm){
         var effectAudio = new Audio("sound/game/monsterHit.mp3");
         effectAudio.play();
+        updateMessage(bricks[row][col] - 2);
       }
       
       monsterCnt--;
@@ -231,6 +232,25 @@ function updateBricks() {
     }
   }
 }
+function updateMessage(idx){
+  switch (idx) {
+    case 0:
+    $("#message").text("paddle width up");
+      break;
+    case 1:
+      $("#message").text("damage up");
+      break;
+    case 2:
+      $("#message").text("life up");
+      break;
+    case 3:
+      $("#message").text("ball size up");
+      break;
+    default:
+      break;
+  }
+}
+
 function updateItem(idx) {
   switch (idx) {
     case 1:
@@ -358,8 +378,19 @@ function init_phase1() {
   init_bricks();
   init_bgi(difficulty);
 
-  //phase1 start
   anim = requestAnimationFrame(phase1);
+
+  setTimeout(function () {
+    window.cancelAnimationFrame(anim);
+    drawImg(startimg,0,0,WIDTH,HEIGHT);
+  });
+  
+  $('#canvas').click(function(){  
+    anim = requestAnimationFrame(phase1);
+    $('#canvas').unbind('click');
+  });
+
+  //phase1 start
   $(document).mousemove(onMouseMove);
 }
 //잡몹

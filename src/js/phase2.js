@@ -21,8 +21,7 @@ $(function () {
   var paddlex;
   var paddleh;
   var paddlew;
-  //switch
-  var startgame =false;
+
 
   // 보스관련
 
@@ -69,7 +68,7 @@ $(function () {
   var bgi = new Image();
   // 시작이미지
   var startimg=new Image();
-  startimg.src='img/backimg/start.png'
+  startimg.src='img/backimg/startBoss.png'
 
 
   // 라이프
@@ -91,23 +90,6 @@ $(function () {
   var ebimages=[];
   var nbimages=[];
   var hbimages=[];
-
-var countdownElement = $('#time');
-var time = 0;
-
-// 1초마다 카운트 업데이트
-  setInterval(function() {
-  time++;
-  countdownElement.text("time: "+time);
-}, 1000);
-
-
-
-var click=false;
-document.addEventListener("click", mouseclick, false);
-function mouseclick(e){
-click=true;
-}
 
   easybosslist.forEach(function(src,index){
     var ebimg=new Image();
@@ -134,7 +116,14 @@ click=true;
     }
   });
 
+  function gamestart(){
+    window.cancelAnimationFrame(anim);
+    ctx.beginPath();
+    ctx.drawImage(startimg,0,0,WIDTH,HEIGHT);
+    ctx.closePath();
+    ctx.fill();
 
+  }
     function init() {
     //canvas 가져오기
     ctx = $("#canvas")[0].getContext("2d");
@@ -164,7 +153,6 @@ click=true;
       },
     });
   
-    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
     if(bosslevel==1){
       bgi.src ="img/backimg/phase1-2.png";
     }
@@ -185,30 +173,10 @@ click=true;
       hardboss_head1=true;
       bgi.src ="img/backimg/phase3-2.png";
     }
-    startgame=true;
   }
 
-  // function gamestart(){
-  //   window.cancelAnimationFrame(anim);
-  // }
 
-    
-
-  $(document).on("click", function() {
-    if(startgame&&bosslevel==1){
-      anim = requestAnimationFrame(easydraw);
-    }
-    if(startgame&&bosslevel==2){
-      anim = requestAnimationFrame(normaldraw);
-    }
-    if(startgame&&bosslevel==3){
-      anim = requestAnimationFrame(harddraw);
-    }
-    startgame=false;
-  });
-
-  
-   
+ 
 
   
 
@@ -223,9 +191,7 @@ click=true;
     rect(paddlex, HEIGHT - paddleh, paddlew, paddleh);
     drawbosshp();
 
-    if(startgame)
-    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
-
+    
     if(infinite)
       $("#life").text("Life: ∞");
     else
@@ -234,7 +200,6 @@ click=true;
 
     if(bosshp>0){
       easyboss(ix,iy)
-
     }
 
     x += dx;
@@ -257,6 +222,7 @@ click=true;
         }
         bosshp-=damage;
         score+=1200
+        updateMessage(1);
         if(bgm)
           bosshit.play();
         if(bosshp<=0){
@@ -286,6 +252,7 @@ click=true;
           bounce.play();
       } else {
         if (life > 1) {
+        updateMessage(0);
           life--;
           x = 500;
           y = 400;
@@ -342,8 +309,6 @@ click=true;
       bsatkimg2();
       atky2+=atkdy2;
     }
-    if(startgame)
-    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
 
     if(infinite)
       $("#life").text("Life: ∞");
@@ -372,6 +337,8 @@ click=true;
         }
         bosshp-=damage;
         score+=1600;
+        updateMessage(1);
+
         if(bgm)
           bosshit.play();
 
@@ -402,6 +369,8 @@ click=true;
           bounce.play();
       } else {
         if(life>1){
+        updateMessage(0);
+
           life--;
           ix = 380;
           iy = 100;
@@ -422,6 +391,8 @@ click=true;
       if(life>0){
         atkx1=Math.random()*900;
         atky1=0;
+        updateMessage(0);
+
         if(bgm)
           bomb.play();
         life--;
@@ -435,6 +406,8 @@ click=true;
       if(life>0){
         atkx2=Math.random()*900;
         atky2=0;
+        updateMessage(0);
+
         if(bgm)
           bomb.play();
         life--;
@@ -514,9 +487,7 @@ click=true;
       
       atky2+=atkdy2;
     }
-    if(startgame)
-    ctx.drawImage(startimg, 0, 0, canvas.width, canvas.height);
-    
+
     if(infinite)
       $("#life").text("Life: ∞");
     else
@@ -537,6 +508,8 @@ click=true;
         bosshp-=damage;
         headchange++;
         score+=2500;
+        updateMessage(1);
+
         if(bgm)
           bosshit.play();
         if(headchange==3&&hardboss_head1){
@@ -586,6 +559,8 @@ click=true;
           bounce.play();
       } else {
         if(life>1){
+        updateMessage(0);
+
           life--;
           score-=5000;
           x = 500;
@@ -604,6 +579,8 @@ click=true;
         score-=5000;
         atkx1=Math.random()*900;
         atky1=0;
+        updateMessage(0);
+
         if(bgm)
           bomb.play();
         life--;
@@ -617,6 +594,8 @@ click=true;
         score-=5000;
         atkx2=Math.random()*900;
         atky2=0;
+        updateMessage(0);
+
         if(bgm)
           bomb.play();
         life--;
@@ -786,9 +765,40 @@ click=true;
       window.location.href = "http://localhost:8080/src/phase1.html";
     }
   }
-  init();
-  // setTimeout(gamestart, 150);
-  init_paddle();
+  function updateMessage(idx){
+    switch (idx) {
+      case 0:
+      $("#message").text("Life -1");
+        break;
+      case 1:
+        $("#message").text("Boss " + damage + " Damaged");
+        break;
+      default:
+        break;
+    }
+  }
+  function switchGame(){
+    if(bosslevel==1){
+      anim = requestAnimationFrame(easydraw);
+    }
+    if(bosslevel==2){
+      anim = requestAnimationFrame(normaldraw);
+    }
+    if(bosslevel==3){
+      anim = requestAnimationFrame(harddraw);
+    }
+  }
+  $('#canvas').click(function() {
+    switchGame();
+    $('#canvas').unbind('click');
+  });
 
+  init();
+  switchGame();
+  setTimeout(gamestart,90);
+
+  init_paddle();
+  
+  
   $(document).mousemove(onMouseMove);
 });
