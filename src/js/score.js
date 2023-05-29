@@ -18,7 +18,7 @@ $(document).ready(function() {
 		url: "data/playing.json",
 		dataType: "json",
 		success: function (data) {
-			$("#score_num").text("Score: "data.score);
+			$("#score_num").text("Score: " + data.score);
 		},
 	});
     setInterval(moveBackground, 20);
