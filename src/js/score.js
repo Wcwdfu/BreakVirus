@@ -14,6 +14,12 @@ $(document).ready(function() {
 		}
 		document.body.style.backgroundPosition = position + "px 0";
 	}
-
+	$.ajax({
+		url: "data/playing.json",
+		dataType: "json",
+		success: function (data) {
+			$("#score_num").text("Score: "data.score);
+		},
+	});
     setInterval(moveBackground, 20);
 });

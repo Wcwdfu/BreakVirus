@@ -254,19 +254,15 @@ function updateMessage(idx){
 function updateItem(idx) {
   switch (idx) {
     case 1:
-      //TODO : 바 길이 증가
       paddlew += 20;
       break;
     case 2:
-      //TODO : 데미지 증가
       damage += 1;
       break;
     case 3:
-      //TODO : 라이프 추가
       life += 1;
       break;
     case 4:
-      //TODO : 공 크기 증가
       radius += 3;
       break;
     default:
@@ -316,8 +312,8 @@ function updateGameStatus(game) {
   if (is_gameover) {
     //게임 종료
     window.cancelAnimationFrame(anim);
-    //TODO: 종료 페이지로 이동
-
+    saveData();
+    window.location.href = "http://localhost:8080/src/score.html";
   } else {
     //잡몹전 일떄
       if (monsterCnt == 0) {
