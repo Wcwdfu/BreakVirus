@@ -18,7 +18,8 @@ $(document).ready(function() {
 		url: "data/playing.json",
 		dataType: "json",
 		success: function (data) {
-			$("#score_num").text("Score: " + data.score);
+			//$("#score_num").text("Score: " + data.score);
+			$("#score_num").html('<img class="background-image" src="img/scoreImg/score_back.png" alt="back"><p class="centered-text">' + data.score +'</p>');
 		},
 	});
     setInterval(moveBackground, 20);
