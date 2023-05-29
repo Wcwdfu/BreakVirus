@@ -9,8 +9,8 @@ var infinite; // 무한모드
 
 var WIDTH;
 var HEIGHT;
-var x = 480;
-var y = 480;
+var x = 500;
+var y = 400;
 var radius = 10;
 var dx = 2;
 var dy = 4;
@@ -42,7 +42,6 @@ var monsterImgs = [
 var paddlex; // 패들 위치 x
 var paddleh; // 패들 높이 y
 var paddlew; // 패들 너비 w
-var paddleMarginBottom = 10; // 패들 바닥으로부터의 거리
 
 var monsterCnt; // 몬스터 수
 
@@ -168,7 +167,7 @@ function init_game() {
     dataType: "json",
     async : false,
     success: function (playingData) {
-      if(playingData.difficulty != 1 && playingData.difficulty != undefined){
+      // if(playingData.difficulty == 1){
         difficulty = playingData.difficulty;
         life = playingData.life;
         score = playingData.score;
@@ -177,25 +176,25 @@ function init_game() {
         paddlew = playingData.paddlew;
         bgm = playingData.bgm;
         infinite = playingData.infinite;
-      }else{
-        $.ajax({
-          url: "data/setting.json",
-          dataType: "json",
-          async : false,
-          success: function (settingData) {
+      // }else{
+      //   $.ajax({
+      //     url: "data/setting.json",
+      //     dataType: "json",
+      //     async : false,
+      //     success: function (settingData) {
             
-            difficulty = settingData.difficulty;
-            life = settingData.life;
-            score = settingData.score;
-            damage = settingData.damage;
-            radius = settingData.radius;
-            paddlew = settingData.paddlew;
-            bgm = settingData.bgm;
-            infinite = settingData.infinite;
+      //       difficulty = settingData.difficulty;
+      //       life = settingData.life;
+      //       score = settingData.score;
+      //       damage = settingData.damage;
+      //       radius = settingData.radius;
+      //       paddlew = settingData.paddlew;
+      //       bgm = settingData.bgm;
+      //       infinite = settingData.infinite;
       
-          },
-        });
-      }
+      //     },
+      //   });
+      // }
     },
   });
 
@@ -269,36 +268,42 @@ function updateItem(idx) {
       break;
   }
 }
+function playBounce(){
+  if(!bgm){
+    var effectAudio = new Audio("sound/bounce.mp3");
+    effectAudio.play();
+  }
+}
 function updateDirection() {
   if (x >= WIDTH - radius || x <= 0 + radius) {
     dx = -dx;
-    if(bgm)
-    {
-      var effectAudio = new Audio("sound/bounce.mp3");
-      effectAudio.play();
-    }
+    playBounce();
   }
   if (y <= 0 + radius) {
     dy = -dy;
-    if(bgm)
-    {
-      var effectAudio = new Audio("sound/bounce.mp3");
-      effectAudio.play();
-    }
-  } else if (y >= HEIGHT - radius - paddleMarginBottom) {
+    playBounce();
+  } else if (y >= HEIGHT - radius) {
     if (x > paddlex && x < paddlex + paddlew) {
       dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
       dy = -dy;
+      if(bgm)
+      playBounce();
+
     } else {
       //Game Over
-      if (life > 0) {
-        life--;
-        x = 480;
-        y = 480;
-      } else {
-        if(!infinite)
-          is_gameover = true;
-      }
+      if(infinite){
+        x = 500;
+        y = 400;
+      }else{
+        if (life > 1) {
+          life--;
+          x = 500;
+          y = 400;
+        } else {
+          if(!infinite)
+            is_gameover = true;
+        }
+      } 
     }
   }
 }
@@ -328,7 +333,6 @@ function updateGameStatus(game) {
 }
 function saveData(){
   var body = {
-    playing: 1,
     difficulty: difficulty,
     life: life,
     score: score,
@@ -394,7 +398,7 @@ function phase1() {
   clear();
   drawBgi(bgi);
   drawBall(x, y, radius);
-  drawPaddle(paddlex, HEIGHT - paddleh - paddleMarginBottom, paddlew, paddleh);
+  drawPaddle(paddlex, HEIGHT - paddleh, paddlew, paddleh);
   drawBricks();
 
   x += dx;

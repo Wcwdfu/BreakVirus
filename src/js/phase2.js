@@ -155,6 +155,7 @@ $(function () {
   
     if(bosslevel==1){
       bgi.src ="img/backimg/phase1-2.png";
+      bosshp=10;
     }
     if(bosslevel==2){
       bosshp=20;
@@ -251,18 +252,22 @@ $(function () {
         if(bgm)
           bounce.play();
       } else {
-        if (life > 1) {
-        updateMessage(0);
-          life--;
+        if(infinite){
           x = 500;
           y = 400;
-          score-=2000;
-          if(bgm)
-            oops.play();
         }else{
-
-          if(!infinite)
-            is_gameover = true;
+          if(life>1){
+            updateMessage(0);
+              life--;
+              x = 500;
+              y = 400;
+              score-=2000;
+              if(bgm)
+                oops.play();
+            }else{
+              if(!infinite)
+                is_gameover = true;
+            }
         }
       }
     }
@@ -371,9 +376,12 @@ $(function () {
         if(bgm)
           bounce.play();
       } else {
-        if(life>1){
+        if(infinite){
+          x = 500;
+          y = 400;
+        }else{
+        if(life>1 && infinite==false){
         updateMessage(0);
-
           life--;
           ix = 380;
           iy = 100;
@@ -387,11 +395,12 @@ $(function () {
             is_gameover = true;
         }
       }
+      }
     }
     //y=0;
     //보스공격충돌감지
     if(bosshp>0&&atkx1>paddlex-paddlew&&atkx1<paddlex+paddlew&&atky1>560){
-      if(life>0){
+      if(life>1 && infinite==false){
         atkx1=Math.random()*900;
         atky1=0;
         updateMessage(0);
@@ -406,7 +415,7 @@ $(function () {
       }
     }
      if(bosshp>0&&atkx2>paddlex-paddlew&&atkx2<paddlex+paddlew&&atky2>560){
-      if(life>0){
+      if(life>1 && infinite==false){
         atkx2=Math.random()*900;
         atky2=0;
         updateMessage(0);
@@ -563,7 +572,11 @@ $(function () {
         if(bgm)
           bounce.play();
       } else {
-        if(life>1){
+        if(infinite){
+          x = 500;
+          y = 400;
+        }else{
+        if(life>1 && infinite==false){
         updateMessage(0);
 
           life--;
@@ -578,9 +591,10 @@ $(function () {
         }
       }
     }
+  }
      //보스공격충돌감지
     if(atkx1>paddlex-paddlew&&atkx1<paddlex+paddlew&&atky1>560){
-      if(life>0){
+      if(life>1 && infinite==false){
         score-=5000;
         atkx1=Math.random()*900;
         atky1=0;
@@ -595,7 +609,7 @@ $(function () {
       }
     }
      if(atkx2>paddlex-paddlew&&atkx2<paddlex+paddlew&&atky2>560){
-      if(life>0){
+      if(life>1 && infinite==false){
         score-=5000;
         atkx2=Math.random()*900;
         atky2=0;
@@ -729,7 +743,6 @@ $(function () {
   function init_paddle() {
     paddlex = WIDTH / 2;
     paddleh = 10;
-    paddlew = 75;
   }
 
   function onMouseMove(e) {

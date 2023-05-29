@@ -44,20 +44,20 @@ $(document).ready(function() {
 
 	// hover시 효과음
 	function playHoverSound() {
-		if(!$("#bgm_checkbox").prop("checked"))
-			return;
+		if ($("#bgm_checkbox").prop("checked")){
         var audio = document.getElementById("hover_sound");
         audio.currentTime = 0;
         audio.play();
+		}
       }
 
 	// click시 효과음
 	function playClickSound() {
-		if(!$("#bgm_checkbox").prop("checked"))
-			return;
+		if ($("#bgm_checkbox").prop("checked")){
         var audio = document.getElementById("click_sound");
         audio.currentTime = 0;
         audio.play();
+		}
       }
 	function saveSetting() {
 		var body = {
