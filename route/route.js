@@ -6,15 +6,21 @@ router.get("/t", function (req, res) {
   res.redirect("src/game.html");
 });
 router.get("/", function (req, res) {
-  var path = "src/data/playing.json";
-  var body = {};
-  fs.writeFile(path,JSON.stringify(body), (err) => {
+  fs.readFile("src/data/setting.json",'utf-8', (err, data) => {
+    if(err){
+      console.error(err);
+      return;
+    }
+  var json = JSON.parse(data);
+  
+  fs.writeFile("src/data/playing.json",JSON.stringify(json), (err) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error saving JSON data');
-    } else {
-      res.redirect("src/tutorial.html");
+    } else{
+      res.redirect("src/main.html");
     }
+  });
   });
 });
 router.post("/save", function (req, res) {
@@ -32,7 +38,7 @@ router.post("/save", function (req, res) {
 router.post("/saveSetting", function (req, res) {
 
   var body = req.body;
-  var path = "src/data/setting.json";
+  var path = "src/data/playing.json";
 
   fs.readFile(path,'utf-8', (err, data) => {
     if(err){

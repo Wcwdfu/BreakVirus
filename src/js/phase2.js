@@ -280,6 +280,9 @@ $(function () {
     }
 
     if (is_gameover) {
+      saveData();
+    window.location.href = "http://localhost:8080/src/score.html";
+
       window.cancelAnimationFrame(anim);
     } else {
       anim = window.requestAnimationFrame(easydraw);
@@ -445,6 +448,8 @@ $(function () {
 
 
     if (is_gameover) {
+      saveData();
+      window.location.href = "http://localhost:8080/src/score.html";
       window.cancelAnimationFrame(anim);
     } else {
       anim = window.requestAnimationFrame(normaldraw);
@@ -652,6 +657,8 @@ $(function () {
 
 
     if (is_gameover) {
+      saveData();
+      window.location.href = "http://localhost:8080/src/score.html";
       window.cancelAnimationFrame(anim);
     } else {
       anim = window.requestAnimationFrame(harddraw);
@@ -795,7 +802,7 @@ $(function () {
 
   init();
   switchGame();
-  setTimeout(gamestart,90);
+  setTimeout(gamestart,150);
 
   init_paddle();
   
