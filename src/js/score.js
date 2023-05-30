@@ -26,8 +26,19 @@ $(document).ready(function() {
 
 	$("#score_button img").hover(playHoverSound());
 
+	function resetData(){
+		$.ajax({
+			url: "",
+			dataType: "json",
+			type: "GET",
+			success: function (data) {	
+				console.log("reset complete");
+			}
+		});
+	}
 	$("#score_restart").click(function() {
 		playClickSound();
+		resetData();
 		window.location.href = "phase1.html";
 		
 	});

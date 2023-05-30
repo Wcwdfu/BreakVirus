@@ -35,6 +35,17 @@ router.post("/save", function (req, res) {
     }
   });
 });
+router.post("/reset",function(req,res){
+  var path = "src/data/playing.json";
+  fs.writeFile(path,JSON.stringify({}), (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error saving JSON data');
+    } else {
+      res.send('JSON data saved successfully');
+    }
+  });
+});
 router.post("/saveSetting", function (req, res) {
 
   var body = req.body;
