@@ -18,8 +18,45 @@ $(document).ready(function() {
 		url: "data/playing.json",
 		dataType: "json",
 		success: function (data) {
-			$("#score_num").text("Score: " + data.score);
+			//$("#score_num").text("Score: " + data.score);
+			$("#score_num").html('<img class="background-image" src="img/scoreImg/score_back.png" alt="back"><p class="centered-text">' + data.score +'</p>');
 		},
 	});
     setInterval(moveBackground, 20);
+
+	$("#score_button img").hover(playHoverSound());
+
+	$("#score_restart").click(function() {
+		playClickSound();
+		window.location.href = "phase1.html";
+		
+	});
+
+	$("#score_main").click(function() {
+		playClickSound();
+		window.location.href = "main.html";
+		
+	});
+
+	// hover시 효과음
+	function playHoverSound() {
+		if(!$("#bgm_checkbox").prop("checked"))
+			return;
+        var audio = document.getElementById("hover_sound");
+        audio.currentTime = 0;
+        audio.play();
+      }
+
+	// click시 효과음
+	function playClickSound() {
+		if(!$("#bgm_checkbox").prop("checked"))
+			return;
+        var audio = document.getElementById("click_sound");
+        audio.currentTime = 0;
+        audio.play();
+      }
+
+	$('#left_character').css({ left: '-100%' }).animate({ left: '50' }, 1000);
+
+	$('#right_character').css({ right: '-100%' }).animate({ right: '50' }, 1000);
 });
