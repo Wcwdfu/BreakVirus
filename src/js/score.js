@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 	function resetData(){
 		$.ajax({
-			url: "",
+			url: "/reset",
 			dataType: "json",
 			type: "GET",
 			success: function (data) {	
@@ -45,8 +45,9 @@ $(document).ready(function() {
 
 	$("#score_main").click(function() {
 		playClickSound();
+		resetData();
 		window.location.href = "main.html";
-		
+
 	});
 
 	// hover시 효과음

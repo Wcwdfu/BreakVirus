@@ -35,15 +35,22 @@ router.post("/save", function (req, res) {
     }
   });
 });
-router.post("/reset",function(req,res){
-  var path = "src/data/playing.json";
-  fs.writeFile(path,JSON.stringify({}), (err) => {
+router.get("/reset",function(req,res){
+  fs.readFile("src/data/setting.json",'utf-8', (err, data) => {
+    if(err){
+      console.error(err);
+      return;
+    }
+  var json = JSON.parse(data);
+  
+  fs.writeFile("src/data/playing.json",JSON.stringify(json), (err) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error saving JSON data');
-    } else {
-      res.send('JSON data saved successfully');
+    }else{
+      res.redirect("src/main.html");
     }
+  });
   });
 });
 router.post("/saveSetting", function (req, res) {
