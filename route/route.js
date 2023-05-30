@@ -18,7 +18,7 @@ router.get("/", function (req, res) {
       console.error(err);
       res.status(500).send('Error saving JSON data');
     } else{
-      res.redirect("src/main.html");
+      res.redirect("src/tutorial.html");
     }
   });
   });
