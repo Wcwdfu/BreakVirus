@@ -290,7 +290,7 @@ function updateItem(idx) {
   }
 }
 function playBounce(){
-  if(!bgm){
+  if(bgm){
     var effectAudio = new Audio("sound/bounce.mp3");
     effectAudio.play();
   }
@@ -307,14 +307,17 @@ function updateDirection() {
     if (x > paddlex && x < paddlex + paddlew) {
       dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
       dy = -dy;
-      if(bgm)
       playBounce();
 
     } else {
+      var audioEffect=new Audio('sound/oops.mp3')
+      audioEffect.play();
       //Game Over
       if(infinite){
         x = 500;
         y = 400;
+        
+        
       }else{
         if (life > 1) {
           life--;
@@ -339,13 +342,13 @@ function updateGameStatus(game) {
     //게임 종료
     window.cancelAnimationFrame(anim);
     saveData();
-    window.location.href = "http://localhost:8080/src/score.html";
+    window.location.href = "score.html";
   } else {
     //잡몹전 일떄
       if (monsterCnt == 0) {
         //잡몹전 우승
         saveData();
-        window.location.href = "http://localhost:8080/src/phase2.html";
+        window.location.href = "phase2.html";
         window.cancelAnimationFrame(anim);
       } else {
         anim = requestAnimationFrame(game);
@@ -364,7 +367,7 @@ function saveData(){
     infinite: infinite
   }
   $.ajax({
-    url: "http://localhost:8080/save",
+    url: "/save",
     contentType: 'application/json',
     type: "POST",
     async: false,

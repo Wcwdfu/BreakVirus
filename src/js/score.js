@@ -26,10 +26,28 @@ $(document).ready(function() {
 
 	$("#score_button img").hover(playHoverSound());
 
+	function resetData(){
+		$.ajax({
+			url: "/reset",
+			dataType: "json",
+			type: "GET",
+			success: function (data) {	
+				console.log("reset complete");
+			}
+		});
+	}
+	$("#score_restart").click(function() {
+		playClickSound();
+		resetData();
+		window.location.href = "phase1.html";
+		
+	});
+
 	$("#score_main").click(function() {
 		playClickSound();
+		resetData();
 		window.location.href = "main.html";
-		
+
 	});
 
 	// hover시 효과음
