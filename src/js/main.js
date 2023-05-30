@@ -42,6 +42,32 @@ $(document).ready(function() {
 		$("#how_to_play_btn img").attr("src", "img/mainImg/htp_1.png");
 	});
 
+	//난이도 버튼 hover
+	$("#easy_difficulty").hover(
+		function() {
+			$("#easy_difficulty").attr("src", "img/mainImg/easy_difficulty_2.png");
+			playHoverSound();
+		  }, function() {
+			$("#easy_difficulty").attr("src", "img/mainImg/easy_difficulty_1.png");
+	});
+
+	$("#normal_difficulty").hover(
+		function() {
+			$("#normal_difficulty").attr("src", "img/mainImg/normal_difficulty_2.png");
+			playHoverSound();
+		  }, function() {
+			$("#normal_difficulty").attr("src", "img/mainImg/normal_difficulty_1.png");
+	});
+
+	$("#hard_difficulty").hover(
+		function() {
+			$("#hard_difficulty").attr("src", "img/mainImg/hard_difficulty_2.png");
+			playHoverSound();
+		  }, function() {
+			$("#hard_difficulty").attr("src", "img/mainImg/hard_difficulty_1.png");
+	});
+
+
 	// hover시 효과음
 	function playHoverSound() {
 		if ($("#bgm_checkbox").prop("checked")){
@@ -78,7 +104,32 @@ $(document).ready(function() {
 	// Start 버튼 클릭
 	$("#start_btn").click(function() {
 		playClickSound();
+		$("#main").hide();
+		$("#difficult_set").show();
+		// window.location.href = "phase1.html";
+	});
+
+	// 난이도 화면에서 각 난이도 버튼 클릭
+	$("#easy_difficulty").click(function() {
+		playClickSound();
 		window.location.href = "phase1.html";
+	});
+
+	$("#normal_difficulty").click(function() {
+		playClickSound();
+		window.location.href = "phase1.html";
+	});
+
+	$("#hard_difficulty").click(function() {
+		playClickSound();
+		window.location.href = "phase1.html";
+	});
+
+	// 난이도 화면에서 Back 버튼 클릭
+	$("#start_back").click(function() {
+		playClickSound();
+		$("#difficult_set").hide();
+		$("#main").show();
 	});
 
 	// Setting 버튼 클릭
@@ -138,5 +189,8 @@ $(document).ready(function() {
 	$('#left_character').css({ left: '-100%' }).animate({ left: '50' }, 1000);
 
 	$('#right_character').css({ right: '-100%' }).animate({ right: '50' }, 1000);
+
+	
 	  
 });
+
