@@ -26,12 +26,6 @@ $(document).ready(function() {
 
 	$("#score_button img").hover(playHoverSound());
 
-	$("#score_restart").click(function() {
-		playClickSound();
-		window.location.href = "phase1.html";
-		
-	});
-
 	$("#score_main").click(function() {
 		playClickSound();
 		window.location.href = "main.html";

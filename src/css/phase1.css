@@ -1,5 +1,6 @@
 body {
 	font-family: 'DungGeunMo', sans-serif;
+  height: 100vh;
 }
 
 @font-face {
@@ -13,10 +14,23 @@ body {
   margin: 0;
   padding: 0;
 }
-body {
-  width: 960px;
-  margin: 0 auto;
+
+.background-image {
+	margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
+#maingame {
+	width: 960px;
+	margin: 0 auto;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
 li {
   list-style: none;
 }
@@ -26,7 +40,6 @@ a {
 
 #title {
   height: 40px;
-  /* font-family: "Alkatra", cursive; */
   text-align: center;
   font-size: 30px;
   font-weight: bold;
