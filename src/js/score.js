@@ -20,12 +20,23 @@ $(document).ready(function() {
 		async : false,
 		success: function (data) {
 			$("#score_num").html('<img class="background-image" src="img/scoreImg/score_back.png" alt="back"><p class="centered-text">' + data.score +'</p>');
+			if(data.win){
+				//우승
+				$("#score_title_img").attr("src", "img/scoreImg/you_win.png");
+				$("#left_img").attr("src", "img/scoreImg/boy_win.png");
+				$("#right_img").attr("src", "img/scoreImg/mob_lose.png");
+			}else{
+				//패배
+				$("#score_title_img").attr("src", "img/scoreImg/game_over.png");
+				$("#left_img").attr("src", "img/scoreImg/boy_lose.png");
+				$("#right_img").attr("src", "img/scoreImg/mob_win.png");
+			}
 		},
 	});
     setInterval(moveBackground, 20);
 
 	$("#score_button img").hover(playHoverSound());
-
+	
 	function resetData(){
 		$.ajax({
 			url: "/reset",
