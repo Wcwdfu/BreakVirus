@@ -149,7 +149,7 @@ function init_bricks() {
     var row = Math.floor(Math.random() * NROWS);
     var col = Math.floor(Math.random() * NCOLS);
     if (bricks[row][col] != 1) i--;
-    var idx = Math.floor(Math.random() * 3) + 2;
+    var idx = Math.floor(Math.random() * 4) + 2;
     bricks[row][col] = idx;
   }
 }
