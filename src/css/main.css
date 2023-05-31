@@ -21,10 +21,11 @@ body {
 	margin: 10px 0;
   }
 
-  #settings_back:hover, #settings_ok:hover, #htp_back:hover {
+  #settings_back:hover, #settings_ok:hover, #htp_back:hover, #start_back:hover {
 	opacity: 0.8;
   }
 
+  #difficult_set,
   #setting_screen,
   #how_to_play_screen {
 	display: flex;
@@ -41,15 +42,21 @@ body {
   #left_character {
 	position: absolute;
 	left: 50px; /* 왼쪽 캐릭터 이미지의 왼쪽 여백 */
-	top: 68%; /* 화면 세로 중앙에 위치 */
+	top: 650px;
 	transform: translateY(-50%); /* 세로 중앙 정렬 */
+	overflow: hidden;
   }
 
   #right_character {
 	position: absolute;
 	right: 50px; /* 오른쪽 캐릭터 이미지의 오른쪽 여백 */
-	top: 68%; /* 화면 세로 중앙에 위치 */
+	top: 650px;
 	transform: translateY(-50%); /* 세로 중앙 정렬 */
+	overflow: hidden;
+  }
+
+  #start_back {
+	padding: 30px;
   }
 
   
