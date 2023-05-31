@@ -1,3 +1,10 @@
+const htpPages = [
+	{image: "img/mainImg/how_to1.png"},
+	{image: "img/mainImg/how_to2.png"},
+];
+
+var currentPage = 0;
+
 $(document).ready(function() {
 
 	document.body.style.backgroundImage = "url('img/mainImg/background2.png')";
@@ -166,6 +173,7 @@ $(document).ready(function() {
 		playClickSound();
 		$("#main").hide();
 		$("#how_to_play_screen").show();
+		loadPage(currentPage);
 	});
 
 	// 설정창에서 Confirm 버튼 클릭
@@ -182,6 +190,12 @@ $(document).ready(function() {
 		$("#setting_screen").hide();
 		$("#main").show();
 	});
+
+	// How to play 화면 조절	
+
+	
+	$("#prev_img").on("click", prevPage);
+	$("#next_img").on("click", nextPage);
 
 	// How to play 화면에서 Back 버튼 클릭
 	$("#htp_back").click(function() {
@@ -212,7 +226,35 @@ $(document).ready(function() {
 
 	$('#right_character').css({ right: '-100%' }).animate({ right: '50' }, 1000);
 
-	
-	  
 });
+
+function loadPage(pageIndex) {
+	document.getElementById("htp_image").src = htpPages[pageIndex].image;
+
+	if (pageIndex === 0) {
+	  $("#prev_img").hide();
+	} else {
+	  $("#prev_img").show();
+	}
+
+	if (pageIndex === 1) {
+	  $("#next_img").hide();
+	} else {
+	  $("#next_img").show();
+	}
+}
+
+function nextPage() {
+	if (currentPage < htpPages.length - 1) {
+	  currentPage++;
+	  loadPage(currentPage);
+	}
+}
+
+function prevPage() {
+	if (currentPage > 0) {
+	  currentPage--;
+	  loadPage(currentPage);
+	}
+}
 

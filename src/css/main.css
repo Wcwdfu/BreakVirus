@@ -59,4 +59,24 @@ body {
 	padding: 30px;
   }
 
+  #prev_img, #next_img {
+	cursor: pointer;
+  }
+  
+  #prev_img:hover, #next_img:hover {
+	opacity: 0.7;
+  }
+
+  #htp_buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	text-align: center;
+  }
+  
+  #htp_buttons img {
+	margin: 10px auto;
+  }
+
   
