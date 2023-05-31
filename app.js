@@ -11,6 +11,7 @@ app.set("port", process.env.PORT || 8080);
 app.set("host", "127.0.0.1");
 
 app.use(static(__dirname));
+app.use(express.static("public"));
 
 app.use(express.urlencoded());
 

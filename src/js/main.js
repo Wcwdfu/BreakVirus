@@ -121,7 +121,7 @@ $(document).ready(function() {
 	$("#easy_difficulty").click(function() {
 		playClickSound();
 		$.ajax({
-			url: "/1",
+			url: "/game/1",
 			type: "GET",			
 			success: function (data) {
 				console.log("save success");
@@ -133,7 +133,7 @@ $(document).ready(function() {
 	$("#normal_difficulty").click(function() {
 		playClickSound();
 		$.ajax({
-			url: "/2",
+			url: "/game/2",
 			type: "GET",			
 			success: function (data) {
 				console.log("save success");
@@ -146,7 +146,7 @@ $(document).ready(function() {
 	$("#hard_difficulty").click(function() {
 		playClickSound();
 		$.ajax({
-			url: "/3",
+			url: "/game/3",
 			type: "GET",			
 			success: function (data) {
 				console.log("save success");

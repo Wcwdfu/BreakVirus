@@ -166,7 +166,7 @@ function init_game() {
     type: "GET",
     async : false,
     success: function (playingData) {
-        difficulty = playingData.difficulty;
+        difficulty = playingData.level;
         life = playingData.life;
         score = playingData.score;
         damage = playingData.damage;
@@ -315,7 +315,7 @@ function updateGameStatus(game) {
 }
 function saveData(){
   var body = {
-    "difficulty": difficulty,
+    "level": difficulty,
     "life": life,
     "score": score,
     "damage": damage,

@@ -140,7 +140,7 @@
       type: "GET",
       async : false,
       success: function (playingData) {
-        bosslevel = playingData.difficulty;
+        bosslevel = playingData.level;
         life = playingData.life;
         score = playingData.score;
         damage = playingData.damage;
@@ -787,7 +787,7 @@
   function saveData(){
     var tmp = bosslevel+1;
     var body = {
-      difficulty: tmp,
+      level: tmp,
       life: life,
       score: score,
       damage: damage,
@@ -847,7 +847,7 @@ $(function () {
 
   init();
   switchGame();
-  setTimeout(gamestart,500);
+  setTimeout(gamestart,150);
 
   init_paddle();
   
