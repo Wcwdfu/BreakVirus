@@ -126,10 +126,12 @@
   
     if(bosslevel==1){
       bgi.src ="img/backimg/phase1-2.png";
+      $("#title").text("Easy Phase 2");
       bosshp=10;
     }
     if(bosslevel==2){
       bosshp=20;
+      $("#title").text("Normal Phase 2");
       ix=340;
       iy=100;
       vx=3;
@@ -138,6 +140,7 @@
     }
     if(bosslevel==3){
       bosshp=30;
+      $("#title").text("Hard Phase 2");
       ix=-60;
       iy=-50;
       vx=1;
@@ -747,8 +750,7 @@ function initBackground(){
       if(!hardboss_head2){
         paddlex = e.pageX - canvasMinX - paddlew / 2;
       } else{
-        var cursorX = e.pageX - canvasMinX;
-        paddlex = canvasMaxX - cursorX - paddlew / 2;
+        paddlex = canvasMaxX - e.pageX - paddlew / 2;
       }
     }
   }
