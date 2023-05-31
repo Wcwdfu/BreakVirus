@@ -38,7 +38,7 @@ body {
   #left_character {
 	position: absolute;
 	left: 50px; /* 왼쪽 캐릭터 이미지의 왼쪽 여백 */
-	top: 650px;
+	top: 620px;
 	transform: translateY(-50%); /* 세로 중앙 정렬 */
 	overflow: hidden;
   }
@@ -46,7 +46,7 @@ body {
   #right_character {
 	position: absolute;
 	right: 50px; /* 오른쪽 캐릭터 이미지의 오른쪽 여백 */
-	top: 650px;
+	top: 620px;
 	transform: translateY(-50%); /* 세로 중앙 정렬 */
 	overflow: hidden;
   }
