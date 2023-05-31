@@ -25,6 +25,13 @@ $(document).ready(function() {
 
 	setInterval(moveBackground, 20);
 
+	//메인화면 bgm 플레이
+
+	var audio = new Audio();
+    audio.src = "sound/mainSound/main_bgm.wav";
+	audio.loop = true;
+	audio.play();
+
 	$("#start_btn img").hover(
 		function() {
 			$("#start_btn img").attr("src", "img/mainImg/start_2.png");
@@ -227,8 +234,10 @@ $(document).ready(function() {
 	$("#bgm_checkbox").change(function () {
 		if ($(this).prop("checked")) {
 			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_checked.png");
+			audio.play();
 		} else {
 			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_unchecked.png");
+			audio.pause();
 		}
 	});
   
