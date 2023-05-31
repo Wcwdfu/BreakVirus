@@ -23,6 +23,26 @@ router.get("/", function (req, res) {
   });
   });
 });
+
+router.get("/:difficulty", function (req, res) {
+  fs.readFile("src/data/playing.json",'utf-8', (err, data) => {
+    if(err){
+      console.error(err);
+      return;
+    }
+  var json = JSON.parse(data);
+  json.difficulty = req.params.difficulty;
+
+  fs.writeFile("src/data/playing.json",JSON.stringify(json), (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error saving JSON data');
+    } else{
+      res.redirect("src/phase1.html");
+    }
+  });
+  });
+});
 router.post("/save", function (req, res) {
   var body = req.body;
   var path = "src/data/playing.json"

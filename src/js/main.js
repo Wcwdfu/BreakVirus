@@ -112,17 +112,39 @@ $(document).ready(function() {
 	// 난이도 화면에서 각 난이도 버튼 클릭
 	$("#easy_difficulty").click(function() {
 		playClickSound();
-		window.location.href = "phase1.html";
+		$.ajax({
+			url: "/1",
+			type: "GET",			
+			success: function (data) {
+				console.log("save success");
+				window.location.href = "phase1.html";
+			}
+		})
 	});
 
 	$("#normal_difficulty").click(function() {
 		playClickSound();
-		window.location.href = "phase1.html";
+		$.ajax({
+			url: "/2",
+			type: "GET",			
+			success: function (data) {
+				console.log("save success");
+				window.location.href = "phase1.html";
+			}
+		})
+
 	});
 
 	$("#hard_difficulty").click(function() {
 		playClickSound();
-		window.location.href = "phase1.html";
+		$.ajax({
+			url: "/3",
+			type: "GET",			
+			success: function (data) {
+				console.log("save success");
+				window.location.href = "phase1.html";
+			}
+		})
 	});
 
 	// 난이도 화면에서 Back 버튼 클릭
