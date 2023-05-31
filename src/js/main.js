@@ -4,7 +4,17 @@ const htpPages = [
 ];
 
 var currentPage = 0;
-
+var audio = new Audio();
+function loadAudio(audioSrc, callback) {
+	var audio = new Audio();
+	audio.src = audioSrc;
+	audio.addEventListener('canplaythrough', function() {
+	  // 로드 완료 시 콜백 호출
+	  callback(audio);
+	});
+  }
+var bgm = false;
+var infinite = false;
 $(document).ready(function() {
 
 	document.body.style.backgroundImage = "url('img/mainImg/background2.png')";
@@ -22,15 +32,20 @@ $(document).ready(function() {
 		}
 		document.body.style.backgroundPosition = position + "px 0";
 	}
-
+	$(document).click(function(){
+		if($("#bgm_checkbox").prop("checked")){
+		loadAudio("sound/mainSound/main_bgm.wav", function(ad) {
+			audio = ad;
+			audio.loop = true;
+			audio.play();
+		$(document).unbind("click");
+		});
+	}
+	});
 	setInterval(moveBackground, 20);
 
 	//메인화면 bgm 플레이
-
-	var audio = new Audio();
-    audio.src = "sound/mainSound/main_bgm.wav";
-	audio.loop = true;
-	audio.play();
+	
 
 	$("#start_btn img").hover(
 		function() {
@@ -93,7 +108,7 @@ $(document).ready(function() {
 
 	// click시 효과음
 	function playClickSound() {
-		if ($("#bgm_checkbox").prop("checked")){
+		if (bgm){
         var audio = document.getElementById("click_sound");
         audio.currentTime = 0;
         audio.play();
@@ -179,17 +194,12 @@ $(document).ready(function() {
 			type: "GET",
 			async: false,
 			success: function (data) {
-				if (data.bgm == true) {
-					$("#bgm_checkbox").prop("checked");
-				} else {
-					$("#bgm_checkbox").prop("checked");
-				}
+				bgm = data.bgm;
+				$("#bgm_checkbox").prop("checked", data.bgm);
 
-				if (data.infinite == true) {
-					$("#infL_checkbox").prop("checked");
-				} else {
-					$("#infL_checkbox").prop("checked");
-				}
+				infinite = data.infinite;
+				$("#infL_checkbox").prop("checked", data.infinite);
+				
 			}
 		})
 	});
@@ -206,6 +216,12 @@ $(document).ready(function() {
 	$("#settings_ok").click(function() {
 		playClickSound();
 		saveSetting();
+		bgm = $("#bgm_checkbox").prop("checked");
+		infinite = $("#infL_checkbox").prop("checked");
+		if(bgm)
+			audio.play();
+		else
+			audio.pause();
 		$("#setting_screen").hide();
 		$("#main").show();
 	});
@@ -213,6 +229,18 @@ $(document).ready(function() {
 	// 설정창 화면에서 Back 버튼 클릭
 	$("#settings_back").click(function() {
 		playClickSound();
+		$("#bgm_checkbox").prop("checked", bgm);
+		$("#infL_checkbox").prop("checked", infinite);
+		if ($("#bgm_checkbox").prop("checked")) {
+			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_checked.png");
+		} else {
+			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_unchecked.png");
+		}
+		if ($("#infL_checkbox").prop("checked")) {
+			$("#infinite_checkbox_img").attr("src", "img/mainImg/infL_checked.png");
+		} else {
+			$("#infinite_checkbox_img").attr("src", "img/mainImg/infL_unchecked.png");
+		}
 		$("#setting_screen").hide();
 		$("#main").show();
 	});
@@ -234,10 +262,8 @@ $(document).ready(function() {
 	$("#bgm_checkbox").change(function () {
 		if ($(this).prop("checked")) {
 			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_checked.png");
-			audio.play();
 		} else {
 			$("#bgm_checkbox_img").attr("src", "img/mainImg/bgm_unchecked.png");
-			audio.pause();
 		}
 	});
   

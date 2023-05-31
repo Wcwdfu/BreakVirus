@@ -18,7 +18,7 @@ router.get("/test2/:level", function (req, res) {
   req.session.infinite = true;
   req.session.score = 0;
   req.session.life = 10;
-  req.session.damage = 3;
+  req.session.damage = 5;
   req.session.radius = 10;
   req.session.paddlew = 75;
   res.redirect("/src/phase2.html");
@@ -47,6 +47,9 @@ router.get("/game/:level", function (req, res) {
 });
 router.post("/save", function (req, res) {
   var body = req.body;
+  console.log(body);
+  if(body.win == true)
+    req.session.win = true;
   req.session.level = body.level;
   req.session.bgm = body.bgm;
   req.session.infinite = body.infinite;
