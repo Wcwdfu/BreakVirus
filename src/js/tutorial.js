@@ -10,7 +10,7 @@ const comicPages = [
   },
   {
     image: "img/tutorialImg/tutorial3.jpg",
-    sound: "sound/tutorialSound/effect3.mp3",
+    sound: null
   },
   {
     image: "img/tutorialImg/tutorial4.jpg",
@@ -18,10 +18,19 @@ const comicPages = [
   },
   { image: "img/tutorialImg/tutorial5.jpg", sound: null },
   { image: "img/tutorialImg/tutorial6.jpg", sound: null },
-  { image: "img/tutorialImg/tutorial7.jpg", sound: null },
-  { image: "img/tutorialImg/tutorial8.jpg", sound: null },
+  { 
+    image: "img/tutorialImg/tutorial7.jpg", 
+    sound: "sound/tutorialSound/effect7.wav" 
+  },
+  { 
+    image: "img/tutorialImg/tutorial8.jpg", 
+    sound: "sound/tutorialSound/effect8.wav" 
+  },
   { image: "img/tutorialImg/tutorial9.jpg", sound: null },
-  { image: "img/tutorialImg/tutorial10.jpg", sound: null },
+  { 
+    image: "img/tutorialImg/tutorial10.jpg", 
+    sound: "sound/tutorialSound/effect10.mp3" 
+  },
 ];
 
 var currentPage = 0;
