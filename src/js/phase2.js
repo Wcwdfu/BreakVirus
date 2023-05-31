@@ -763,8 +763,11 @@
     ctx.fill();
   }
   function rect(x, y, w, h) {
+    //TEST 바 이미지 공 이미지
+    var barChain = new Image();
+    barChain.src = "img/figure/chain.png";
     ctx.beginPath();
-    ctx.rect(x, y, w, h);
+    ctx.drawImage(barChain, x, y, w, h);
     ctx.closePath();
     ctx.fill();
   }

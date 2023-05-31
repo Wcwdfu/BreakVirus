@@ -39,6 +39,10 @@ var monsterImgs = [
   "img/monster/monster4.png",
 ];
 
+//TEST 바 이미지 공 이미지
+var barChain = new Image();
+barChain.src = "img/figure/chain.png";
+
 var paddlex; // 패들 위치 x
 var paddleh; // 패들 높이 y
 var paddlew; // 패들 너비 w
@@ -72,9 +76,11 @@ function drawBall(x, y, r) {
   ctx.fill();
 }
 
-function drawPaddle(x, y, w, h) {
+//바 수정
+function drawPaddle(img, x, y, w, h) {
   ctx.beginPath();
-  ctx.rect(x, y, w, h);
+  //ctx.rect(x,y, w, h);
+  ctx.drawImage(img, x, y, w, h);
   ctx.closePath();
   ctx.fill();
 }
@@ -409,7 +415,7 @@ function phase1() {
   clear();
   drawBgi(bgi);
   drawBall(x, y, radius);
-  drawPaddle(paddlex, HEIGHT - paddleh, paddlew, paddleh);
+  drawPaddle(barChain, paddlex, HEIGHT - paddleh, paddlew, paddleh);
   drawBricks();
 
   x += dx;
