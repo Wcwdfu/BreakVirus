@@ -85,13 +85,14 @@ $(document).ready(function() {
         audio.play();
 		}
       }
+	
 	function saveSetting() {
 		var body = {
 			bgm: $("#bgm_checkbox").prop("checked"),
 			infinite: $("#infL_checkbox").prop("checked")
 		}
 		$.ajax({
-			url: "http://localhost:8080/saveSetting",
+			url: "/saveSetting",
 			contentType: 'application/json',
 			type: "POST",
 			async: false,
@@ -159,6 +160,24 @@ $(document).ready(function() {
 		playClickSound();
 		$("#main").hide();
 		$("#setting_screen").show();
+		$.ajax({
+			url: "/getSetting",
+			type: "GET",
+			async: false,
+			success: function (data) {
+				if (data.bgm == true) {
+					$("#bgm_checkbox").prop("checked");
+				} else {
+					$("#bgm_checkbox").prop("checked");
+				}
+
+				if (data.infinite == true) {
+					$("#infL_checkbox").prop("checked");
+				} else {
+					$("#infL_checkbox").prop("checked");
+				}
+			}
+		})
 	});
 
 	// How to play 버튼 클릭

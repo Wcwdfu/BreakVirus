@@ -15,10 +15,10 @@ $(document).ready(function() {
 		document.body.style.backgroundPosition = position + "px 0";
 	}
 	$.ajax({
-		url: "data/playing.json",
+		url: "/getSessionData",
 		dataType: "json",
+		async : false,
 		success: function (data) {
-			//$("#score_num").text("Score: " + data.score);
 			$("#score_num").html('<img class="background-image" src="img/scoreImg/score_back.png" alt="back"><p class="centered-text">' + data.score +'</p>');
 		},
 	});
@@ -29,8 +29,8 @@ $(document).ready(function() {
 	function resetData(){
 		$.ajax({
 			url: "/reset",
-			dataType: "json",
-			type: "GET",
+			type: "POST",
+			async: false,
 			success: function (data) {	
 				console.log("reset complete");
 			}

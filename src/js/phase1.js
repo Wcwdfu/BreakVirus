@@ -1,8 +1,8 @@
-$(init_game);
+$(window).on('load',init_game);
 
 var life; // 라이프
 var score; // 점수
-var difficulty; // 0,1,2 -> easy , normal, hard
+var difficulty; // 1,2,3 -> easy , normal, hard
 var damage; // 보스전 데미지
 var bgm; // 배경음
 var infinite; // 무한모드
@@ -154,9 +154,6 @@ function init_bricks() {
   }
 }
 function init_game() {
-
- 
-
   //canvas 가져오기
   ctx = $("#canvas")[0].getContext("2d");
   WIDTH = $("#canvas").width();
@@ -164,13 +161,11 @@ function init_game() {
 
   canvasMinX = $("#canvas").offset().left;
   canvasMaxX = canvasMinX + WIDTH;
-  
   $.ajax({
-    url: "data/playing.json",
-    dataType: "json",
+    url: "/getSessionData",
+    type: "GET",
     async : false,
     success: function (playingData) {
-      // if(playingData.difficulty == 1){
         difficulty = playingData.difficulty;
         life = playingData.life;
         score = playingData.score;
@@ -179,26 +174,7 @@ function init_game() {
         paddlew = playingData.paddlew;
         bgm = playingData.bgm;
         infinite = playingData.infinite;
-      // }else{
-      //   $.ajax({
-      //     url: "data/setting.json",
-      //     dataType: "json",
-      //     async : false,
-      //     success: function (settingData) {
-            
-      //       difficulty = settingData.difficulty;
-      //       life = settingData.life;
-      //       score = settingData.score;
-      //       damage = settingData.damage;
-      //       radius = settingData.radius;
-      //       paddlew = settingData.paddlew;
-      //       bgm = settingData.bgm;
-      //       infinite = settingData.infinite;
-      
-      //     },
-      //   });
-      // }
-    },
+    },  
   });
 
   init_html();
@@ -339,14 +315,14 @@ function updateGameStatus(game) {
 }
 function saveData(){
   var body = {
-    difficulty: difficulty,
-    life: life,
-    score: score,
-    damage: damage,
-    radius: radius,
-    paddlew: paddlew,
-    bgm: bgm,
-    infinite: infinite
+    "difficulty": difficulty,
+    "life": life,
+    "score": score,
+    "damage": damage,
+    "radius": radius,
+    "paddlew": paddlew,
+    "bgm": bgm,
+    "infinite": infinite
   }
   $.ajax({
     url: "/save",
@@ -403,7 +379,7 @@ function init_html() {
      document.body.style.backgroundPosition = position + "px 0";
    }
  
-   setInterval(moveBackground, 20);
+   setInterval(moveBackground, 100);
     
 }
 function init_phase1() {

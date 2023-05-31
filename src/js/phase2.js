@@ -1,5 +1,3 @@
-$(function () {
-
   //init
   var WIDTH;
   var HEIGHT;
@@ -137,20 +135,19 @@ $(function () {
 
     //TODO : 데이터 들고오기
     $.ajax({
-      url: "data/playing.json",
-      dataType: "json",
+      url: "/getSessionData",
+      // dataType: "json",
+      type: "GET",
       async : false,
-      success: function (settingData) {
-        
-        bosslevel = settingData.difficulty;
-        life = settingData.life;
-        score = settingData.score;
-        damage = settingData.damage;
-        radius = settingData.radius;
-        paddlew = settingData.paddlew;
-        bgm = settingData.bgm;
-        infinite = settingData.infinite;
-
+      success: function (playingData) {
+        bosslevel = playingData.difficulty;
+        life = playingData.life;
+        score = playingData.score;
+        damage = playingData.damage;
+        radius = playingData.radius;
+        paddlew = playingData.paddlew;
+        bgm = playingData.bgm;
+        infinite = playingData.infinite;
       },
     });
 
@@ -556,6 +553,7 @@ $(function () {
 
         if(bgm)
           bosshit.play();
+        alert("hit");
         if(headchange==3&&hardboss_head1){
           hardboss_head1=false;
           hardboss_head2=true;
@@ -787,8 +785,9 @@ $(function () {
   }
 
   function saveData(){
+    var tmp = bosslevel+1;
     var body = {
-      difficulty: bosslevel+1,
+      difficulty: tmp,
       life: life,
       score: score,
       damage: damage,
@@ -798,7 +797,7 @@ $(function () {
       infinite: infinite
     }
     $.ajax({
-      url: "http://localhost:8080/save",
+      url: "/save",
       contentType: 'application/json',
       type: "POST",
       async: false,
@@ -838,6 +837,9 @@ $(function () {
       anim = requestAnimationFrame(harddraw);
     }
   }
+$(function () {
+
+
   $('#canvas').click(function() {
     switchGame();
     $('#canvas').unbind('click');
@@ -845,7 +847,7 @@ $(function () {
 
   init();
   switchGame();
-  setTimeout(gamestart,150);
+  setTimeout(gamestart,500);
 
   init_paddle();
   
