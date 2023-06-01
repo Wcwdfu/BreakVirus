@@ -26,7 +26,10 @@ var difficulty_NCOLS = [4, 5, 6];
 
 var bgi = new Image(); // 배경 이미지
 var startimg=new Image();
-startimg.src='img/backimg/start.png';
+loadImage("img/backimg/start.png", function (image) {
+  startimg = image;
+});
+
 var backgroundImgs = [
   "img/backimg/phase1-1.jpg",
   "img/backimg/phase2-1.png",
@@ -59,6 +62,28 @@ var PADDING; // 벽돌 간격
 
 var ctx; // 캔버스 컨텍스트
 var anim; // 애니메이션
+
+//오디오 로드
+function loadAudio(audioSrc, callback) {
+  if(bgm){
+  var audio = new Audio();
+  audio.src = audioSrc;
+  audio.addEventListener('canplaythrough', function() {
+    // 로드 완료 시 콜백 호출
+    callback(audio);
+  });
+}
+}
+
+// 이미지 로드
+function loadImage(imageSrc, callback) {
+  var image = new Image();
+  image.src = imageSrc;
+  image.addEventListener('load', function() {
+    // 로드 완료 시 콜백 호출
+    callback(image);
+  });
+}
 
 
 //////////////////////////////////////////////////
@@ -99,21 +124,24 @@ function drawBricks() {
   for (i = 0; i < NROWS; i++) {
     for (j = 0; j < NCOLS; j++) {
       if (bricks[i][j] == 1) {
-        var image = new Image();
-        image.src = "img/phase1/brick.png";
+        var img = new Image();
+        img.src = "img/phase1/brick.png";
         drawImg(
-          image,
+          img,
           j * BRICKWIDTH,
           i * BRICKHEIGHT,
           BRICKWIDTH - PADDING,
           BRICKHEIGHT - PADDING
         );
       } else if (bricks[i][j] >= 2) {
-        var image = new Image();
+        var img = new Image();
         var idx = bricks[i][j] - 2;
-        image.src = monsterImgs[idx];
+        img.src = monsterImgs[idx];
+        // loadImage(monsterImgs[idx], function (image) {
+        //   img = image;
+        // });
         drawImg(
-          image,
+          img,
           j * BRICKWIDTH,
           i * BRICKHEIGHT,
           BRICKWIDTH - PADDING,
@@ -132,7 +160,9 @@ function init_paddle() {
 }
 function init_bgi(difficulty) {
   var level = 0;
-  bgi.src = backgroundImgs[difficulty-1];
+  loadImage(backgroundImgs[difficulty-1], function (image) {
+    bgi = image;
+  });
 }
 function init_bricks() {
   NROWS = difficulty_NROWS[difficulty - 1];
@@ -195,19 +225,17 @@ function updateBricks() {
     if (bricks[row][col] == 1) {
       score += 1000;
       dy = -dy;
-      if(bgm){
-        var effectAudio = new Audio("sound/game/brickHit.mp3");
-        effectAudio.play();
-      }
+      loadAudio("sound/game/brickHit.mp3", function (audio) {
+        audio.play();
+      });
       
       bricks[row][col] = 0;
     } else if (bricks[row][col] >= 2) {
       score += 2000;
-      if(bgm){
-        var effectAudio = new Audio("sound/game/monsterHit.mp3");
-        effectAudio.play();
-        updateMessage(bricks[row][col] - 2);
-      }
+      loadAudio("sound/game/monsterHit.mp3", function (audio) {
+        audio.play();
+      });
+      updateMessage(bricks[row][col] - 2);
       
       monsterCnt--;
       dy = -dy;
@@ -253,29 +281,33 @@ function updateItem(idx) {
       break;
   }
 }
-function playBounce(){
-  if(bgm){
-    var effectAudio = new Audio("sound/bounce.mp3");
-    effectAudio.play();
-  }
-}
+
+
 function updateDirection() {
   if (x >= WIDTH - radius || x <= 0 + radius) {
     dx = -dx;
-    playBounce();
+
+    loadAudio("sound/bounce.mp3", function (audio) {
+      audio.play();
+    });
   }
   if (y <= 0 + radius) {
     dy = -dy;
-    playBounce();
+
+    loadAudio("sound/bounce.mp3", function (audio) {
+      audio.play();
+    });
   } else if (y >= HEIGHT - radius) {
     if (x > paddlex && x < paddlex + paddlew) {
       dx = -((paddlex + paddlew / 2 - x) / paddlew) * 10;
       dy = -dy;
-      playBounce();
-
+      loadAudio("sound/bounce.mp3", function (audio) {
+        audio.play();
+      });
     } else {
-      var audioEffect=new Audio('sound/oops.mp3')
-      audioEffect.play();
+      loadAudio("sound/oops.mp3", function (audio) {
+        audio.play();
+      });
       //Game Over
       if(infinite){
         x = 500;

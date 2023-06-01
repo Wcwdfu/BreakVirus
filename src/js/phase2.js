@@ -2,7 +2,7 @@
   var WIDTH;
   var HEIGHT;
   var x = 500;
-  var y = 500;
+  var y = 400;
   var radius = 10;
   var dx = 2;
   var dy = 4;
@@ -30,17 +30,12 @@
   var vy=2;
   var imgindex = 0;
   var bosshp=10;
-  var headchange=0;
 
   var easybosslist = ["img/boss/easyboss1.png", "img/boss/easyboss2.png", "img/boss/easyboss3.png", "img/boss/easyboss4.png"];
   var normalbosslist = ["img/boss/nmbs1.png", "img/boss/nmbs2.png", "img/boss/nmbs3.png", "img/boss/nmbs4.png", "img/boss/nmbs5.png", "img/boss/nmbs6.png"];
   //하드보스 이미지설정
   var hardbosslist = [];
-  for (var i = 0; i <= 72; i++) {
-  var imageName = "hbs" + i + ".png";
-  var imagePath = "img/hbs/" + imageName;
-  hardbosslist.push(imagePath);
-  }
+
 
   //보스공격
   var bsatk1=new Image();
@@ -90,30 +85,7 @@
   var nbimages=[];
   var hbimages=[];
 
-  easybosslist.forEach(function(src,index){
-    var ebimg=new Image();
-    ebimg.src=src;
-    ebimg.onload=function(){
-      ebimages[index]=ebimg;
-    }
-
-  });
-
-  normalbosslist.forEach(function(src,index){
-    var nbimg=new Image();
-    nbimg.src=src;
-    nbimg.onload=function(){
-      nbimages[index]=nbimg;
-    }
-  });
-
-   hardbosslist.forEach(function(src,index){
-    var hbimg=new Image();
-    hbimg.src=src;
-    hbimg.onload=function(){
-      hbimages[index]=hbimg;
-    }
-  });
+  
 
   function gamestart(){
     window.cancelAnimationFrame(anim);
@@ -151,34 +123,6 @@
       },
     });
 
-     //배경 넣기
-
-   if(bosslevel == 1)
-   {
-     document.body.style.backgroundImage = "url('img/backimg/background1.png')";
-   } else if(bosslevel == 2 ) {
-     document.body.style.backgroundImage = "url('img/backimg/background2.png')";
-   } else {
-     document.body.style.backgroundImage = "url('img/backimg/background3.png')";
-   }
- 
-   // document.body.style.backgroundImage = "url('img/backimg/background1.png')";
-   document.body.style.backgroundSize = "cover";
-   document.body.style.backgroundRepeat = "no-repeat";
- 
-   var position = 0;
-   var speed = 1; // 이동 속도 조정
-   var windowWidth = window.innerWidth; // 창의 가로 크기
- 
-   function moveBackground() {
-     position -= speed;
-     if (position <= -windowWidth) {
-       position = 0;
-     }
-     document.body.style.backgroundPosition = position + "px 0";
-   }
- 
-   setInterval(moveBackground, 20);
   
     if(bosslevel==1){
       bgi.src ="img/backimg/phase1-2.png";
@@ -202,8 +146,35 @@
       bgi.src ="img/backimg/phase3-2.png";
     }
   }
-
-
+function initBackground(){
+     //배경 넣기
+     if(bosslevel == 1)
+     {
+       document.body.style.backgroundImage = "url('img/backimg/background1.png')";
+     } else if(bosslevel == 2 ) {
+       document.body.style.backgroundImage = "url('img/backimg/background2.png')";
+     } else {
+       document.body.style.backgroundImage = "url('img/backimg/background3.png')";
+     }
+   
+     // document.body.style.backgroundImage = "url('img/backimg/background1.png')";
+     document.body.style.backgroundSize = "cover";
+     document.body.style.backgroundRepeat = "no-repeat";
+   
+     var position = 0;
+     var speed = 1; // 이동 속도 조정
+     var windowWidth = window.innerWidth; // 창의 가로 크기
+   
+     function moveBackground() {
+       position -= speed;
+       if (position <= -windowWidth) {
+         position = 0;
+       }
+       document.body.style.backgroundPosition = position + "px 0";
+     }
+   
+     setInterval(moveBackground, 20);
+}
  
 
   
@@ -257,7 +228,7 @@
           if(bgm)
             bossdie.play();
           score+=10000
-          saveData();
+          saveData(false);
           nextLevel();
         }
     }
@@ -312,8 +283,8 @@
     }
 
     if (is_gameover) {
-      saveData();
-    window.location.href = "http://localhost:8080/src/score.html";
+      saveData(false);
+    window.location.href = "score.html";
 
       window.cancelAnimationFrame(anim);
     } else {
@@ -382,7 +353,7 @@
             bossdie.play();
           score+=25000;
           middle_boss=false
-          saveData();
+          saveData(false);
           nextLevel();
         }
       }
@@ -484,8 +455,8 @@
 
 
     if (is_gameover) {
-      saveData();
-      window.location.href = "http://localhost:8080/src/score.html";
+      saveData(false);
+      window.location.href = "score.html";
       window.cancelAnimationFrame(anim);
     } else {
       anim = window.requestAnimationFrame(normaldraw);
@@ -547,39 +518,34 @@
         dy = -dy;
         vx = -vx;
         bosshp-=damage;
-        headchange++;
         score+=2500;
         updateMessage(1);
 
         if(bgm)
           bosshit.play();
-        alert("hit");
-        if(headchange==3&&hardboss_head1){
+        if(hardboss_head1 && bosshp<=20){
           hardboss_head1=false;
           hardboss_head2=true;
           ix=245;
           iy=-150;
-          headchange=0;
         }
-        if(headchange==3&&hardboss_head2){
+        if(hardboss_head2 && bosshp<=10){
           hardboss_head2=false;
           hardboss_head3=true;
           ix=570;
           iy=-110;
-          headchange=0;
         }
-        if(headchange==3&&hardboss_head3){
-          hardboss_head3=false;
-          hardboss_head1=true;
-          ix=-60;
-          iy=-50;
-          headchange=0;
-        }
+        // if(hardboss_head3 && bosshp<=5){
+        //   hardboss_head3=false;
+        //   hardboss_head1=true;
+        //   ix=-60;
+        //   iy=-50;
+        // }
         if(bosshp<=0){
           if(bgm)
             bossdie.play();
           score+=60000
-          saveData();
+          saveData(true);
           nextLevel();
         }
       }
@@ -699,8 +665,8 @@
 
 
     if (is_gameover) {
-      saveData();
-      window.location.href = "http://localhost:8080/src/score.html";
+      saveData(false);
+      window.location.href = "score.html";
       window.cancelAnimationFrame(anim);
     } else {
       anim = window.requestAnimationFrame(harddraw);
@@ -787,8 +753,9 @@
     }
   }
 
-  function saveData(){
+  function saveData(w){
     var tmp = bosslevel+1;
+    
     var body = {
       level: tmp,
       life: life,
@@ -799,6 +766,8 @@
       bgm: bgm,
       infinite: infinite
     }
+    if(w)
+      body.win = w;      
     $.ajax({
       url: "/save",
       contentType: 'application/json',
@@ -812,15 +781,15 @@
   }
   function nextLevel(){
     if(bosslevel == 3){
-      window.location.href = "http://localhost:8080/src/score.html";
+      window.location.href = "score.html";
     }else{
-      window.location.href = "http://localhost:8080/src/phase1.html";
+      window.location.href = "phase1.html";
     }
   }
   function updateMessage(idx){
     switch (idx) {
       case 0:
-      $("#message").text("Life -1");
+      $("#message").text("Life - 1");
         break;
       case 1:
         $("#message").text("Boss " + damage + " Damaged");
@@ -840,6 +809,38 @@
       anim = requestAnimationFrame(harddraw);
     }
   }
+  function bossImginit(){
+    if(bosslevel==1){
+    easybosslist.forEach(function(src,index){
+      var ebimg=new Image();
+      ebimg.src=src;
+      ebimg.onload=function(){
+        ebimages[index]=ebimg;
+      }
+    });
+    }else if(bosslevel==2){
+    normalbosslist.forEach(function(src,index){
+      var nbimg=new Image();
+      nbimg.src=src;
+      nbimg.onload=function(){
+        nbimages[index]=nbimg;
+      }
+    });
+    }else if(bosslevel==3){
+      for (var i = 0; i <= 72; i++) {
+        var imageName = "hbs" + i + ".png";
+        var imagePath = "img/hbs/" + imageName;
+        hardbosslist.push(imagePath);
+        }
+     hardbosslist.forEach(function(src,index){
+      var hbimg=new Image();
+      hbimg.src=src;
+      hbimg.onload=function(){
+        hbimages[index]=hbimg;
+      }
+    });
+  }
+}
 $(function () {
 
 
@@ -847,10 +848,10 @@ $(function () {
     switchGame();
     $('#canvas').unbind('click');
   });
-
   init();
-  switchGame();
-  setTimeout(gamestart,150);
+  initBackground();
+  bossImginit();
+  setTimeout(gamestart,300);
 
   init_paddle();
   
