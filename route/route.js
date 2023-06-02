@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require('fs');
 const router = express.Router();
 router.get("/test1/:level", function (req, res) {
   req.session.level = parseInt(req.params.level);
@@ -25,7 +24,7 @@ router.get("/test2/:level", function (req, res) {
 });
 
 router.get("/getSessionData", function (req, res) {
-  res.json(200,req.session);
+  res.json(200, req.session);
 });
 
 router.get("/", function (req, res) {
@@ -37,19 +36,18 @@ router.get("/", function (req, res) {
   req.session.damage = 1;
   req.session.radius = 10;
   req.session.paddlew = 75;
-  
+
   res.redirect("src/tutorial.html");
 });
 
 router.get("/game/:level", function (req, res) {
   req.session.level = parseInt(req.params.level);
-  res.redirect(200,"src/phase1.html");
+  res.redirect(200, "src/phase1.html");
 });
 router.post("/save", function (req, res) {
   var body = req.body;
   console.log(body);
-  if(body.win == true)
-    req.session.win = true;
+  if (body.win == true) req.session.win = true;
   req.session.level = body.level;
   req.session.bgm = body.bgm;
   req.session.infinite = body.infinite;
@@ -60,7 +58,7 @@ router.post("/save", function (req, res) {
   req.session.paddlew = body.paddlew;
   res.sendStatus(200);
 });
-router.post("/reset",function(req,res){
+router.post("/reset", function (req, res) {
   req.session.level = 1;
   req.session.score = 0;
   req.session.life = 3;
@@ -71,10 +69,10 @@ router.post("/reset",function(req,res){
 });
 router.get("/getSetting", function (req, res) {
   var body = {
-    "bgm": req.session.bgm,
-    "infinite": req.session.infinite
-  }
-  res.json(200,body);
+    bgm: req.session.bgm,
+    infinite: req.session.infinite,
+  };
+  res.json(200, body);
 });
 router.post("/saveSetting", function (req, res) {
   var body = req.body;
@@ -82,7 +80,7 @@ router.post("/saveSetting", function (req, res) {
   req.session.bgm = body.bgm;
   req.session.infinite = body.infinite;
 
-  res.sendStatus(200);  
+  res.sendStatus(200);
 });
 
 router.all("*", function (req, res) {

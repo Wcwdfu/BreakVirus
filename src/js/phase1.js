@@ -171,7 +171,7 @@ function init_bricks() {
   BRICKWIDTH = WIDTH / NCOLS;
   BRICKHEIGHT = 40;
 
-  //set counts of monster (difficulty * 3)
+  //set counts of monster (difficulty * 4)
   monsterCnt = difficulty * 4;
   bricks = new Array(NROWS);
   for (i = 0; i < NROWS; i++) {
